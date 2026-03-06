@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mirajo Henry | Développeur Web & Mobile</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     :root {
       --bg: #0f172a;
@@ -1254,21 +1255,22 @@
         <div class="contact-form-side fade-in">
           <div class="form-group">
             <label>NOM_COMPLET</label>
-            <input type="text" placeholder="Votre nom et prénom" />
+            <input id="from_name" type="text" placeholder="Votre nom et prénom" />
           </div>
           <div class="form-group">
             <label>EMAIL</label>
-            <input type="email" placeholder="votre@email.com" />
+            <input id="from_email" type="email" placeholder="votre@email.com" />
           </div>
           <div class="form-group">
             <label>SUJET</label>
-            <input type="text" placeholder="Proposition de projet / collaboration..." />
+            <input id="subject" type="text" placeholder="Proposition de projet / collaboration..." />
           </div>
           <div class="form-group">
             <label>MESSAGE</label>
-            <textarea placeholder="Décrivez votre projet ou votre besoin..."></textarea>
+            <textarea id="message" placeholder="Décrivez votre projet ou votre besoin..."></textarea>
           </div>
-          <button class="form-send" onclick="sendMessage()">
+          <div id="form-feedback" style="display:none;font-family:'Space Mono',monospace;font-size:0.8rem;padding:0.8rem 1rem;border-radius:6px;margin-bottom:0.5rem"></div>
+          <button class="form-send" id="send-btn" onclick="sendMessage()">
             🚀 Envoyer le message
           </button>
         </div>
@@ -1331,14 +1333,67 @@
     }
 
     // Send message
-    function sendMessage() {
-      const btn = document.querySelector('.form-send');
-      btn.textContent = '✅ Message envoyé !';
-      btn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
-      setTimeout(() => {
+    // ======= EMAILJS CONFIG =======
+    const EMAILJS_PUBLIC_KEY  = 'pSjJNGMwvt6SCnsTK';
+    const EMAILJS_SERVICE_ID  = 'service_6nshhvg';
+    const EMAILJS_TEMPLATE_ID = 'template_0drlhkb';
+    // ==============================
+
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+    function showFeedback(msg, ok) {
+      const fb = document.getElementById('form-feedback');
+      fb.textContent = msg;
+      fb.style.display = 'block';
+      fb.style.background = ok ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)';
+      fb.style.border = ok ? '1px solid rgba(34,197,94,0.3)' : '1px solid rgba(239,68,68,0.3)';
+      fb.style.color = ok ? '#22c55e' : '#ef4444';
+    }
+
+    async function sendMessage() {
+      const btn = document.getElementById('send-btn');
+      const name    = document.getElementById('from_name').value.trim();
+      const email   = document.getElementById('from_email').value.trim();
+      const subject = document.getElementById('subject').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (!name || !email || !subject || !message) {
+        showFeedback('⚠️ Veuillez remplir tous les champs.', false);
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showFeedback('⚠️ Adresse email invalide.', false);
+        return;
+      }
+
+      btn.textContent = '⏳ Envoi en cours...';
+      btn.disabled = true;
+
+      try {
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          from_name: name,
+          from_email: email,
+          subject: subject,
+          message: message,
+          to_name: 'Mirajo Henry',
+        });
+        showFeedback('✅ Message envoyé ! Je vous répondrai bientôt.', true);
+        document.getElementById('from_name').value = '';
+        document.getElementById('from_email').value = '';
+        document.getElementById('subject').value = '';
+        document.getElementById('message').value = '';
+        btn.innerHTML = '✅ Envoyé !';
+        btn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
+        setTimeout(() => {
+          btn.innerHTML = '🚀 Envoyer le message';
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 4000);
+      } catch (err) {
+        showFeedback('❌ Échec envoi. Réessayez.', false);
         btn.innerHTML = '🚀 Envoyer le message';
-        btn.style.background = '';
-      }, 3000);
+        btn.disabled = false;
+      }
     }
 
     // Typing animation in hero

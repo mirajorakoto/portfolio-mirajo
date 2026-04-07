@@ -963,8 +963,8 @@ footer p{font-size:.72rem;color:var(--light);}
 <!-- ════════ FOOTER ════════ -->
 <footer>
   <div class="ft-logo">MR<em>.</em>dev</div>
-  <p>© 2024 RAKOTONDRAZAKA Mirajo Henry — Tous droits réservés</p>
-  <p style="color:var(--teal);font-weight:600;">Made with ❤️ in Fianarantsoa 🇲🇬</p>
+  <p>© 2026 RAKOTONDRAZAKA Mirajo — Tous droits réservés</p>
+  <p style="color:var(--teal);font-weight:600;">Made with  in Fianarantsoa 🇲🇬</p>
 </footer>
 
 <script>
@@ -1055,26 +1055,64 @@ function showFb(msg,ok){
   fb.style.border=ok?'1.5px solid #a7f3d0':'1.5px solid #fecdd3';
   fb.style.color=ok?'#065f46':'#9f1239';
 }
-async function sendMsg(){
-  const btn=document.getElementById('send-btn');
-  const n=document.getElementById('fn').value.trim();
-  const e=document.getElementById('fe').value.trim();
-  const s=document.getElementById('fs').value.trim();
-  const m=document.getElementById('fm').value.trim();
-  if(!n||!e||!s||!m){showFb('⚠️ Veuillez remplir tous les champs.',false);return;}
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){showFb('⚠️ Email invalide.',false);return;}
-  btn.textContent='⏳ Envoi...';btn.disabled=true;
-  try{
-    await emailjs.send('service_6nshhvg','template_0drlhkb',{from_name:n,from_email:e,subject:s,message:m,to_name:'Mirajo Henry'});
-    showFb('✅ Message envoyé ! Je vous répondrai bientôt.',true);
-    ['fn','fe','fs','fm'].forEach(id=>document.getElementById(id).value='');
-    btn.innerHTML='✅ Envoyé !';btn.style.background='#059669';
-    setTimeout(()=>{btn.innerHTML='🚀 Envoyer le message';btn.style.background='';btn.disabled=false;},4000);
-  }catch{
-    showFb('❌ Échec. Réessayez plus tard.',false);
-    btn.innerHTML='🚀 Envoyer le message';btn.disabled=false;
-  }
+
+function showFb(msg, success) {
+    const fb = document.getElementById('form-fb');
+    fb.innerHTML = msg;
+    fb.style.color = success ? 'green' : 'red';
 }
+
+async function sendMsg() {
+    const btn = document.getElementById('send-btn');
+    const n = document.getElementById('fn').value.trim();
+    const e = document.getElementById('fe').value.trim();
+    const s = document.getElementById('fs').value.trim();
+    const m = document.getElementById('fm').value.trim();
+
+    if (!n || !e || !s || !m) {
+        showFb('⚠️ Veuillez remplir tous les champs.', false);
+        return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) {
+        showFb('⚠️ Email invalide.', false);
+        return;
+    }
+
+    btn.textContent = '⏳ Envoi...';
+    btn.disabled = true;
+
+    try {
+        await emailjs.send(
+            'service_6nshhvg', // <-- ton Service ID EmailJS
+            'template_icok6lx', // <-- ton Template ID EmailJS
+            {
+                from_name: n,
+                from_email: e,
+                subject: s,
+                message: m,
+                to_name: 'Mirajo Henry' // le destinataire dans ton template
+            }
+        );
+
+        showFb('✅ Message envoyé ! Je vous répondrai bientôt.', true);
+        ['fn','fe','fs','fm'].forEach(id => document.getElementById(id).value = '');
+        btn.innerHTML = '✅ Envoyé !';
+        btn.style.background = '#059669';
+        setTimeout(() => {
+            btn.innerHTML = '🚀 Envoyer le message';
+            btn.style.background = '';
+            btn.disabled = false;
+        }, 4000);
+
+    } catch (error) {
+        console.error(error);
+        showFb('❌ Échec. Réessayez plus tard.', false);
+        btn.innerHTML = '🚀 Envoyer le message';
+        btn.disabled = false;
+    }
+}
+
 </script>
 </body>
 </html>

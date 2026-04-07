@@ -1047,19 +1047,15 @@ function downloadCV(){
 }
 
 /* ── EMAILJS ── */
-emailjs.init({publicKey:'pSjJNGMwvt6SCnsTK'});
-function showFb(msg,ok){
-  const fb=document.getElementById('form-fb');
-  fb.textContent=msg;fb.style.display='block';
-  fb.style.background=ok?'#ecfdf5':'#fff1f2';
-  fb.style.border=ok?'1.5px solid #a7f3d0':'1.5px solid #fecdd3';
-  fb.style.color=ok?'#065f46':'#9f1239';
-}
+emailjs.init({ publicKey: 'pSjJNGMwvt6SCnsTK' });
 
-function showFb(msg, success) {
+function showFb(msg, ok) {
     const fb = document.getElementById('form-fb');
-    fb.innerHTML = msg;
-    fb.style.color = success ? 'green' : 'red';
+    fb.style.display = 'block';
+    fb.textContent = msg;
+    fb.style.background = ok ? '#ecfdf5' : '#fff1f2';
+    fb.style.border = ok ? '1.5px solid #a7f3d0' : '1.5px solid #fecdd3';
+    fb.style.color = ok ? '#065f46' : '#9f1239';
 }
 
 async function sendMsg() {
@@ -1084,14 +1080,14 @@ async function sendMsg() {
 
     try {
         await emailjs.send(
-            'service_6nshhvg', // <-- ton Service ID EmailJS
-            'template_icok6lx', // <-- ton Template ID EmailJS
+            'service_dxc6yjq',      // <-- ton Service ID testé dans dashboard
+            'template_sish3vb',     // <-- ton Template ID testé dans dashboard
             {
                 from_name: n,
                 from_email: e,
                 subject: s,
                 message: m,
-                to_name: 'Mirajo Henry' // le destinataire dans ton template
+                to_name: 'Mirajo Henry'
             }
         );
 
@@ -1106,13 +1102,12 @@ async function sendMsg() {
         }, 4000);
 
     } catch (error) {
-        console.error(error);
+        console.error(error); // <-- voir l'erreur exacte dans la console
         showFb('❌ Échec. Réessayez plus tard.', false);
         btn.innerHTML = '🚀 Envoyer le message';
         btn.disabled = false;
     }
 }
-
 </script>
 </body>
 </html>

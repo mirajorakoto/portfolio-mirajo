@@ -1046,9 +1046,10 @@ function downloadCV(){
   setTimeout(()=>{window.print();document.head.removeChild(style);btn.innerHTML='⬇ Télécharger le CV (PDF)';},400);
 }
 
-/* ── EMAILJS ── */
-emailjs.init({ publicKey: 'pSjJNGMwvt6SCnsTK' });
+/* ── EMAILJS INIT ── */
+emailjs.init('pSjJNGMwvt6SCnsTK'); // <-- ta clé publique
 
+/* ── FONCTION POUR AFFICHER LES FEEDBACKS ── */
 function showFb(msg, ok) {
     const fb = document.getElementById('form-fb');
     fb.style.display = 'block';
@@ -1056,8 +1057,12 @@ function showFb(msg, ok) {
     fb.style.background = ok ? '#ecfdf5' : '#fff1f2';
     fb.style.border = ok ? '1.5px solid #a7f3d0' : '1.5px solid #fecdd3';
     fb.style.color = ok ? '#065f46' : '#9f1239';
+    fb.style.padding = '8px';
+    fb.style.marginTop = '8px';
+    fb.style.borderRadius = '6px';
 }
 
+/* ── FONCTION POUR ENVOYER LE MESSAGE ── */
 async function sendMsg() {
     const btn = document.getElementById('send-btn');
     const n = document.getElementById('fn').value.trim();
@@ -1065,44 +1070,57 @@ async function sendMsg() {
     const s = document.getElementById('fs').value.trim();
     const m = document.getElementById('fm').value.trim();
 
+    // Validation des champs
     if (!n || !e || !s || !m) {
         showFb('⚠️ Veuillez remplir tous les champs.', false);
         return;
     }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) {
+    // Validation email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(e)) {
         showFb('⚠️ Email invalide.', false);
         return;
     }
 
+    // Indiquer que l’envoi est en cours
     btn.textContent = '⏳ Envoi...';
     btn.disabled = true;
 
     try {
-        await emailjs.send(
-            'service_dxc6yjq',      // <-- ton Service ID testé dans dashboard
-            'template_sish3vb',     // <-- ton Template ID testé dans dashboard
+        // Envoi via EmailJS
+        const response = await emailjs.send(
+            'service_dxc6yjq',      // <-- ton Service ID EmailJS testé
+            'template_sish3vb',     // <-- ton Template ID EmailJS testé
             {
-                from_name: n,
-                from_email: e,
-                subject: s,
-                message: m,
-                to_name: 'Mirajo Henry'
+                from_name: n,        // correspond à {{from_name}}
+                from_email: e,       // correspond à {{from_email}}
+                subject: s,          // correspond à {{subject}}
+                message: m,          // correspond à {{message}}
+                to_name: 'Mirajo Henry' // correspond à {{to_name}} si utilisé
             }
         );
 
+        // Message de succès
         showFb('✅ Message envoyé ! Je vous répondrai bientôt.', true);
+
+        // Réinitialiser le formulaire
         ['fn','fe','fs','fm'].forEach(id => document.getElementById(id).value = '');
         btn.innerHTML = '✅ Envoyé !';
         btn.style.background = '#059669';
+
+        // Remettre le bouton par défaut après 4 secondes
         setTimeout(() => {
             btn.innerHTML = '🚀 Envoyer le message';
             btn.style.background = '';
             btn.disabled = false;
         }, 4000);
 
+        console.log('EmailJS response:', response);
+
     } catch (error) {
-        console.error(error); // <-- voir l'erreur exacte dans la console
+        // Affichage erreur
+        console.error('Erreur EmailJS:', error);
         showFb('❌ Échec. Réessayez plus tard.', false);
         btn.innerHTML = '🚀 Envoyer le message';
         btn.disabled = false;

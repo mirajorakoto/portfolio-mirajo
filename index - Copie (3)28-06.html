@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Mirajo Henry · Développeur Full-Stack</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>💻</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+/* ═══════════════════════════════════════
+   TOKENS — LIGHT (default)
+═══════════════════════════════════════ */
+:root{
+  --bg:#f8f9fe; --bg2:#ffffff; --bg3:#f1f4fd; --surface:#ffffff; --card:#ffffff;
+  --text:#0f172a; --text2:#334155; --muted:#64748b; --light:#94a3b8;
+  --indigo:#4f46e5; --indigo2:#6366f1; --teal:#0d9488; --teal2:#14b8a6; --rose:#e11d48;
+  --border:#e2e8f0; --border2:rgba(79,70,229,.15);
+  --shadow:0 1px 3px rgba(15,23,42,.08),0 4px 16px rgba(15,23,42,.06);
+  --shadow2:0 8px 32px rgba(15,23,42,.1),0 2px 8px rgba(15,23,42,.06);
+  --shadow3:0 20px 60px rgba(79,70,229,.12);
+  --glow:rgba(79,70,229,.18);
+  --nav-bg:rgba(248,249,254,.92);
+  --code-bg:#ffffff;
+  --cv-side-bg:#f8fafc;
+  --cv-border:#e2e8f0;
+  --bar-bg:#f1f5f9;
+  --lang-dot-off:#e2e8f0;
+}
+
+/* ═══════════════════════════════════════
+   TOKENS — DARK
+═══════════════════════════════════════ */
+[data-theme="dark"]{
+  --bg:#0d1117; --bg2:#161b22; --bg3:#1c2230; --surface:#161b22; --card:#1c2230;
+  --text:#f0f6fc; --text2:#c9d1d9; --muted:#8b949e; --light:#6e7681;
+  --indigo:#818cf8; --indigo2:#a5b4fc; --teal:#2dd4bf; --teal2:#5eead4; --rose:#fb7185;
+  --border:#30363d; --border2:rgba(129,140,248,.2);
+  --shadow:0 1px 3px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+  --shadow2:0 8px 32px rgba(0,0,0,.5),0 2px 8px rgba(0,0,0,.3);
+  --shadow3:0 20px 60px rgba(129,140,248,.15);
+  --glow:rgba(129,140,248,.25);
+  --nav-bg:rgba(13,17,23,.94);
+  --code-bg:#161b22;
+  --cv-side-bg:#0d1117;
+  --cv-border:#30363d;
+  --bar-bg:#21262d;
+  --lang-dot-off:#21262d;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1.6;transition:background .3s,color .3s;}
+
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--bg3);}
+::-webkit-scrollbar-thumb{background:#c7d2fe;border-radius:5px;}
+::-webkit-scrollbar-thumb:hover{background:#818cf8;}
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#30363d;}
+
+#progress{position:fixed;top:0;left:0;height:3px;z-index:999;background:linear-gradient(90deg,var(--indigo),var(--teal2));width:0%;transition:width .1s;}
+
+/* ══════════════════════ NAV ══════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.9rem 5vw;
+  background:var(--nav-bg);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  transition:box-shadow .3s,background .3s;
+}
+nav.scrolled{box-shadow:var(--shadow);}
+.nav-logo{font-family:'JetBrains Mono',monospace;font-size:.92rem;font-weight:700;color:var(--indigo);text-decoration:none;letter-spacing:.05em;}
+.nav-logo em{color:var(--teal);font-style:normal;}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{font-size:.82rem;font-weight:600;color:var(--muted);text-decoration:none;letter-spacing:.01em;transition:color .2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:var(--indigo);border-radius:2px;transition:width .3s;}
+.nav-links a:hover{color:var(--indigo);}
+.nav-links a:hover::after{width:100%;}
+
+/* Nav controls area */
+.nav-controls{display:flex;align-items:center;gap:.6rem;}
+
+/* Lang toggle */
+.lang-toggle{
+  display:flex;align-items:center;
+  background:var(--bg3);border:1.5px solid var(--border);
+  border-radius:8px;overflow:hidden;
+}
+.lang-btn{
+  font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;
+  padding:.38rem .65rem;border:none;background:transparent;
+  color:var(--muted);cursor:pointer;transition:all .2s;letter-spacing:.05em;
+}
+.lang-btn.active{background:var(--indigo);color:#fff;}
+
+/* Theme toggle */
+.theme-toggle{
+  width:36px;height:36px;border-radius:8px;
+  background:var(--bg3);border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;cursor:pointer;transition:all .2s;
+}
+.theme-toggle:hover{border-color:var(--indigo2);background:var(--bg);}
+
+.nav-btn{font-size:.78rem;font-weight:700;padding:.5rem 1.2rem;background:var(--indigo);color:#fff;border-radius:8px;text-decoration:none;transition:all .25s;white-space:nowrap;box-shadow:0 2px 10px var(--glow);}
+.nav-btn:hover{background:#4338ca;box-shadow:0 4px 18px var(--glow);transform:translateY(-1px);}
+[data-theme="dark"] .nav-btn:hover{background:#6366f1;}
+
+.hbg{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+.hbg span{display:block;width:22px;height:2px;background:var(--indigo);border-radius:2px;transition:all .3s;}
+.hbg.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.hbg.open span:nth-child(2){opacity:0;}
+.hbg.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+
+.mob-menu{display:none;position:fixed;top:57px;left:0;right:0;z-index:499;background:var(--bg2);border-bottom:1px solid var(--border);padding:1.2rem 1.5rem;flex-direction:column;gap:.6rem;box-shadow:var(--shadow2);}
+.mob-menu.open{display:flex;}
+.mob-menu a{font-size:.84rem;font-weight:600;color:var(--text2);text-decoration:none;padding:.6rem 0;border-bottom:1px solid var(--border);transition:color .2s;}
+.mob-menu a:last-child{border-bottom:none;background:var(--indigo);color:#fff;padding:.7rem 1rem;border-radius:8px;text-align:center;margin-top:.3rem;font-weight:700;}
+.mob-menu a:hover{color:var(--indigo);}
+.mob-controls{display:flex;gap:.6rem;padding:.6rem 0;border-bottom:1px solid var(--border);}
+
+/* ══════════════════════ LAYOUT ══════════════════════ */
+section{position:relative;z-index:1;width:100%;}
+.wrap{width:100%;max-width:1160px;margin:0 auto;padding:0 5vw;}
+
+.s-chip{display:inline-flex;align-items:center;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--indigo);background:var(--bg3);padding:.28rem .8rem;border-radius:100px;margin-bottom:.9rem;border:1px solid var(--border2);}
+.s-chip::before{content:'//';color:var(--teal);margin-right:.1rem;}
+
+h2.s-title{font-weight:800;font-size:clamp(1.75rem,3.5vw,2.6rem);color:var(--text);line-height:1.15;margin-bottom:2.8rem;letter-spacing:-.02em;}
+h2.s-title .acc{background:linear-gradient(135deg,var(--indigo),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* ══════════════════════ HERO ══════════════════════ */
+#hero{min-height:100vh;display:flex;align-items:center;background:var(--bg);padding:7rem 5vw 4rem;position:relative;overflow:hidden;}
+#hero::before{content:'';position:absolute;inset:0;z-index:0;background-image:radial-gradient(circle at 1px 1px,rgba(79,70,229,.07) 1px,transparent 0);background-size:32px 32px;}
+[data-theme="dark"] #hero::before{background-image:radial-gradient(circle at 1px 1px,rgba(129,140,248,.05) 1px,transparent 0);}
+#hero::after{content:'';position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,.07) 0%,transparent 70%);top:-200px;right:-200px;pointer-events:none;z-index:0;}
+.hero-blob2{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(13,148,136,.06) 0%,transparent 70%);bottom:-150px;left:-100px;pointer-events:none;z-index:0;}
+.hero-inner{max-width:1160px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;position:relative;z-index:1;}
+
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.32rem .85rem;border-radius:100px;background:#ecfdf5;border:1px solid #a7f3d0;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;color:#065f46;margin-bottom:1.4rem;letter-spacing:.08em;}
+[data-theme="dark"] .hero-badge{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3);color:#6ee7b7;}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.2);animation:livePulse 2s infinite;}
+@keyframes livePulse{0%,100%{box-shadow:0 0 0 3px rgba(16,185,129,.2);}50%{box-shadow:0 0 0 6px rgba(16,185,129,.05);}}
+
+h1.hero-name{font-weight:800;font-size:clamp(2rem,4.5vw,4.2rem);line-height:1.05;letter-spacing:-.03em;margin-bottom:.5rem;}
+.hero-name .n1{display:block;color:var(--text);}
+.hero-name .n2{display:block;background:linear-gradient(135deg,var(--indigo) 0%,#8b5cf6 40%,var(--teal) 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:hShimmer 5s linear infinite;}
+@keyframes hShimmer{to{background-position:200% center;}}
+
+.hero-role{font-family:'JetBrains Mono',monospace;font-size:clamp(.72rem,1.3vw,.88rem);color:var(--indigo2);font-weight:600;margin-bottom:1.2rem;min-height:1.4em;}
+.hero-desc{font-size:clamp(.88rem,1.2vw,.97rem);color:var(--muted);line-height:1.85;margin-bottom:2rem;max-width:500px;}
+.hero-btns{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:2.5rem;}
+.btn-main{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.6rem;background:var(--indigo);color:#fff;font-weight:700;font-size:.84rem;border-radius:10px;text-decoration:none;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 18px var(--glow);}
+.btn-main:hover{background:#4338ca;transform:translateY(-2px);box-shadow:0 8px 28px var(--glow);}
+.btn-sec{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.6rem;background:var(--bg2);color:var(--text2);font-weight:700;font-size:.84rem;border-radius:10px;text-decoration:none;border:1.5px solid var(--border);transition:all .25s;}
+.btn-sec:hover{border-color:var(--indigo2);color:var(--indigo);box-shadow:var(--shadow);}
+
+.hero-stats{display:flex;gap:2.5rem;padding-top:2rem;border-top:1px solid var(--border);flex-wrap:wrap;}
+.stat-n{font-size:2rem;font-weight:800;background:linear-gradient(135deg,var(--indigo),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+.stat-l{font-size:.72rem;font-weight:600;color:var(--muted);margin-top:.2rem;letter-spacing:.02em;}
+
+/* ── Code card ── */
+.code-card{background:var(--code-bg);border-radius:20px;border:1.5px solid var(--border);overflow:hidden;box-shadow:var(--shadow3);transition:transform .4s,box-shadow .4s;}
+.code-card:hover{transform:translateY(-6px);box-shadow:0 30px 70px rgba(79,70,229,.14);}
+.cc-top{display:flex;align-items:center;gap:.45rem;padding:.75rem 1.1rem;background:var(--bg3);border-bottom:1px solid var(--border);}
+.cd{width:10px;height:10px;border-radius:50%;}
+.cd1{background:#ff5f57;}.cd2{background:#febc2e;}.cd3{background:#28c840;}
+.cc-file{font-family:'JetBrains Mono',monospace;font-size:.63rem;color:var(--light);margin-left:auto;}
+.cc-body{padding:1.4rem 1.6rem;font-family:'JetBrains Mono',monospace;font-size:clamp(.62rem,1vw,.76rem);line-height:2;background:var(--code-bg);}
+.kw{color:#7c3aed;}.str{color:#0d9488;}.fn{color:#d97706;}.cm{color:#94a3b8;}.wh{color:var(--text2);}.cl{color:#db2777;}
+[data-theme="dark"] .kw{color:#c084fc;}[data-theme="dark"] .str{color:#5eead4;}[data-theme="dark"] .fn{color:#fbbf24;}[data-theme="dark"] .cl{color:#f472b6;}
+
+/* ══════════════════════ ABOUT ══════════════════════ */
+#about{background:var(--bg2);padding:6rem 0;}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
+.about-p{color:var(--text2);line-height:1.9;margin-bottom:1rem;font-size:.93rem;}
+.about-p strong{color:var(--text);font-weight:700;}
+
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:1.6rem;}
+.ibox{background:var(--bg3);border:1.5px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;transition:border-color .25s,transform .25s,box-shadow .25s;}
+.ibox:hover{border-color:var(--indigo2);transform:translateY(-3px);box-shadow:var(--shadow);}
+.ik{font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:700;color:var(--teal);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.3rem;}
+.iv{font-size:.84rem;font-weight:600;color:var(--text);word-break:break-word;}
+
+.lang-row{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:.8rem;}
+.lang-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.38rem .9rem;border-radius:8px;font-size:.8rem;font-weight:600;background:var(--bg3);border:1.5px solid var(--border);color:var(--text2);transition:all .2s;}
+.lang-badge:hover{border-color:var(--indigo2);background:var(--bg);color:var(--indigo);}
+.llvl{font-size:.62rem;color:var(--teal);font-family:'JetBrains Mono',monospace;font-weight:700;}
+
+.pill-wrap{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem;}
+.pill{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:500;padding:.22rem .65rem;border-radius:6px;background:var(--bg3);color:var(--indigo2);border:1px solid var(--border2);transition:all .2s;}
+.pill:hover{background:var(--bg);border-color:var(--indigo2);}
+.pill.t{background:var(--bg3);color:var(--teal);border-color:rgba(13,148,136,.25);}
+
+.avail-badge{display:inline-flex;align-items:center;gap:.6rem;margin-top:1.5rem;padding:.5rem 1.1rem;border-radius:10px;background:#ecfdf5;border:1.5px solid #a7f3d0;font-size:.8rem;font-weight:700;color:#065f46;font-family:'JetBrains Mono',monospace;}
+[data-theme="dark"] .avail-badge{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3);color:#6ee7b7;}
+
+/* ══════════════════════ SKILLS ══════════════════════ */
+#skills{background:var(--bg3);padding:6rem 0;}
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;}
+.sk-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:16px;padding:1.6rem;transition:all .3s;position:relative;overflow:hidden;}
+.sk-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--indigo),var(--teal2));transform:scaleX(0);transform-origin:left;transition:transform .35s;}
+.sk-card:hover::before{transform:scaleX(1);}
+.sk-card:hover{transform:translateY(-5px);box-shadow:var(--shadow3);border-color:var(--border2);}
+.sk-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1rem;background:var(--bg3);border:1.5px solid var(--border);}
+.sk-card h3{font-size:.97rem;font-weight:800;color:var(--text);margin-bottom:.45rem;}
+.sk-card p{font-size:.8rem;color:var(--muted);line-height:1.7;}
+.sk-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:1rem;}
+.sk-tag{font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:500;padding:.18rem .5rem;border-radius:5px;background:var(--bg3);color:var(--teal);border:1px solid rgba(13,148,136,.25);}
+
+/* ══════════════════════ PROJECTS ══════════════════════ */
+#projects{background:var(--bg2);padding:6rem 0;}
+.proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;}
+.proj-card{background:var(--bg3);border:1.5px solid var(--border);border-radius:16px;padding:2rem;position:relative;overflow:hidden;transition:all .3s;}
+.proj-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--indigo),var(--teal2));transform:scaleX(0);transform-origin:left;transition:transform .4s;}
+.proj-card:hover::after{transform:scaleX(1);}
+.proj-card:hover{transform:translateY(-5px);box-shadow:var(--shadow3);border-color:var(--border2);background:var(--bg2);}
+.proj-idx{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;color:var(--indigo2);letter-spacing:.2em;margin-bottom:.75rem;display:inline-block;background:var(--bg3);padding:.18rem .6rem;border-radius:4px;border:1px solid var(--border);}
+.proj-card h3{font-size:1.05rem;font-weight:800;color:var(--text);margin-bottom:.7rem;}
+.proj-card p{color:var(--muted);font-size:.84rem;line-height:1.75;}
+.proj-stack{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:1.1rem;}
+.stag{font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:500;padding:.2rem .52rem;border-radius:5px;background:var(--bg);color:var(--indigo2);border:1px solid var(--border2);}
+
+/* ══════════════════════ CV ══════════════════════ */
+#cv{background:var(--bg3);padding:6rem 0;}
+#cv-print{background:var(--bg2);color:var(--text);border-radius:20px;overflow:hidden;border:1.5px solid var(--border);box-shadow:var(--shadow2);}
+
+.cv-head{background:linear-gradient(135deg,#1e1b4b 0%,#312e81 50%,#134e4a 100%);padding:2.2rem 2.5rem;display:flex;gap:1.8rem;align-items:center;flex-wrap:wrap;position:relative;overflow:hidden;}
+.cv-head::before{content:'';position:absolute;right:-120px;top:-120px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.06) 0%,transparent 60%);}
+
+/* Photo profil dans CV header */
+.cv-ava{
+  width:78px;height:78px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,#818cf8,#2dd4bf);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.7rem;font-weight:900;color:#fff;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  border:3px solid rgba(255,255,255,.35);
+  position:relative;z-index:1;
+  overflow:hidden;
+}
+.cv-ava img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+
+.cv-head-info{flex:1;min-width:0;position:relative;z-index:1;}
+.cv-head-info h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(1rem,2.5vw,1.7rem);font-weight:800;color:#f8fafc;word-break:break-word;margin-bottom:.25rem;}
+.cv-role-tag{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:#5eead4;margin-bottom:.8rem;letter-spacing:.06em;}
+.cv-contacts{display:flex;flex-wrap:wrap;gap:.55rem;}
+.cv-ci{display:flex;align-items:center;gap:.35rem;font-size:.74rem;color:rgba(248,250,252,.7);}
+.cv-ci em{color:#5eead4;font-style:normal;}
+
+.cv-body{display:grid;grid-template-columns:230px 1fr;background:var(--bg2);}
+.cv-side{background:var(--cv-side-bg);padding:1.7rem;border-right:1px solid var(--cv-border);}
+.cv-main-col{padding:1.7rem 2.2rem;}
+.cv-s{margin-bottom:1.8rem;}
+.cv-st{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;color:var(--indigo);letter-spacing:.2em;text-transform:uppercase;padding-bottom:.45rem;border-bottom:2px solid var(--border);margin-bottom:.9rem;}
+
+.bitem{margin-bottom:.8rem;}
+.blbl{display:flex;justify-content:space-between;font-size:.74rem;font-weight:700;color:var(--text);margin-bottom:.3rem;}
+.blbl span{font-size:.62rem;font-weight:400;color:var(--muted);}
+.btrack{height:5px;background:var(--bar-bg);border-radius:3px;overflow:hidden;}
+.bfill{height:100%;background:linear-gradient(90deg,var(--indigo),var(--teal));border-radius:3px;animation:fillB 1.5s ease forwards;}
+@keyframes fillB{from{width:0;}}
+
+.ldrow{display:flex;gap:3px;margin:.2rem 0 .25rem;}
+.ld{width:9px;height:9px;border-radius:50%;background:var(--lang-dot-off);}
+.ld.on{background:linear-gradient(135deg,var(--indigo),var(--teal));}
+.lname{font-size:.82rem;font-weight:700;color:var(--text);}
+.lsub{font-size:.65rem;color:var(--muted);}
+.lang-cv{margin-bottom:.85rem;}
+
+.qtags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem;}
+.qtag{font-size:.62rem;padding:.2rem .6rem;border-radius:5px;background:var(--bg3);color:var(--indigo);font-family:'JetBrains Mono',monospace;font-weight:600;border:1px solid var(--border2);}
+
+.profile-txt{font-size:.84rem;line-height:1.85;color:var(--muted);}
+.eitem{margin-bottom:1.3rem;padding-left:1.1rem;position:relative;}
+.eitem::before{content:'';position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:50%;background:linear-gradient(135deg,var(--indigo),var(--teal));}
+.eitem::after{content:'';position:absolute;left:3px;top:19px;width:1px;height:calc(100% + 5px);background:var(--cv-border);}
+.eitem:last-child::after{display:none;}
+.erole{font-weight:800;font-size:.9rem;color:var(--text);margin-bottom:.15rem;}
+.eco{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--indigo);margin-bottom:.35rem;}
+.edesc{font-size:.79rem;color:var(--muted);line-height:1.7;}
+
+.stackg{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;}
+.scat{font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:700;color:var(--indigo);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.35rem;}
+.stagc{display:flex;flex-wrap:wrap;gap:.3rem;}
+.stagci{font-size:.6rem;padding:.15rem .45rem;border-radius:4px;background:var(--bg3);color:var(--indigo2);font-family:'JetBrains Mono',monospace;font-weight:600;border:1px solid var(--border2);}
+
+.cv-dlbar{display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;padding:1.3rem;border-top:1.5px solid var(--border);background:var(--bg3);}
+.cv-dlbtn{display:inline-flex;align-items:center;gap:.5rem;padding:.82rem 2rem;background:var(--indigo);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:.82rem;border-radius:10px;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 18px var(--glow);}
+.cv-dlbtn:hover{background:#4338ca;transform:translateY(-2px);box-shadow:0 8px 28px var(--glow);}
+
+/* ══════════════════════ CONTACT ══════════════════════ */
+#contact{background:var(--bg2);padding:6rem 0;}
+.ct-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
+.ct-desc{font-size:.93rem;color:var(--muted);line-height:1.9;margin-bottom:2rem;}
+.ct-list{list-style:none;}
+.ct-list li{display:flex;align-items:center;gap:.9rem;padding:.85rem 0;border-bottom:1px solid var(--border);}
+.ct-ico{width:40px;height:40px;flex-shrink:0;border-radius:10px;background:var(--bg3);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all .25s;}
+.ct-list li:hover .ct-ico{background:var(--bg);border-color:var(--indigo2);}
+.ct-lbl{font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:700;color:var(--teal);letter-spacing:.1em;display:block;}
+.ct-val{font-size:.86rem;font-weight:600;color:var(--text);word-break:break-word;}
+.soc-row{display:flex;gap:.7rem;margin-top:1.8rem;flex-wrap:wrap;}
+.soc{width:42px;height:42px;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1rem;transition:all .25s;color:var(--text);}
+.soc:hover{border-color:var(--indigo2);background:var(--bg);transform:translateY(-3px);box-shadow:var(--shadow);}
+
+.ct-form{display:flex;flex-direction:column;gap:1rem;}
+.fg{display:flex;flex-direction:column;gap:.35rem;}
+.fg label{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:700;color:var(--teal);letter-spacing:.1em;}
+.fg input,.fg textarea{background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:.78rem 1rem;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:500;outline:none;transition:all .25s;width:100%;}
+.fg input:focus,.fg textarea:focus{border-color:var(--indigo2);box-shadow:0 0 0 3px rgba(99,102,241,.12);background:var(--bg2);}
+.fg textarea{min-height:115px;resize:vertical;}
+#form-fb{display:none;font-size:.78rem;font-weight:600;padding:.8rem 1rem;border-radius:8px;font-family:'JetBrains Mono',monospace;}
+.ct-sendbtn{display:inline-flex;align-items:center;gap:.5rem;padding:.82rem 2rem;background:var(--indigo);color:#fff;font-weight:700;font-size:.84rem;border:none;border-radius:10px;cursor:pointer;align-self:flex-start;transition:all .25s;box-shadow:0 4px 18px var(--glow);}
+.ct-sendbtn:hover{background:#4338ca;transform:translateY(-2px);box-shadow:0 8px 28px var(--glow);}
+.ct-sendbtn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+
+/* ══════════════════════ FOOTER ══════════════════════ */
+footer{width:100%;background:var(--bg2);border-top:1px solid var(--border);padding:1.8rem 5vw;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem;}
+.ft-logo{font-family:'JetBrains Mono',monospace;font-size:.88rem;font-weight:700;color:var(--indigo);}
+.ft-logo em{color:var(--teal);font-style:normal;}
+footer p{font-size:.72rem;color:var(--light);}
+
+/* ══════════════════════ ANIMATIONS ══════════════════════ */
+.rev{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease;}
+.rev.in{opacity:1;transform:translateY(0);}
+.rev-l{opacity:0;transform:translateX(-28px);transition:opacity .65s ease,transform .65s ease;}
+.rev-l.in{opacity:1;transform:translateX(0);}
+.rev-r{opacity:0;transform:translateX(28px);transition:opacity .65s ease,transform .65s ease;}
+.rev-r.in{opacity:1;transform:translateX(0);}
+.d1{transition-delay:.1s;}.d2{transition-delay:.2s;}.d3{transition-delay:.3s;}.d4{transition-delay:.4s;}
+
+/* ══════════════════════ PRINT ══════════════════════ */
+@media print{
+  nav,.mob-menu,#hero,#about,#skills,#projects,#contact,footer,#progress,.hero-blob2{display:none!important;}
+  body{background:#fff!important;}
+  #cv{padding:0!important;background:#fff!important;}
+  #cv .s-chip,#cv h2.s-title,.cv-dlbar{display:none!important;}
+  #cv-print{box-shadow:none!important;border:none!important;border-radius:0!important;}
+  .cv-head{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .bfill,.ld.on{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+
+/* ══════════════════════ RESPONSIVE ══════════════════════ */
+@media(max-width:1024px){
+  .hero-inner{grid-template-columns:1fr;gap:0;}
+  .hero-code-col{display:none;}
+  #hero{min-height:auto;padding:6rem 5vw 4rem;}
+  .skills-grid{grid-template-columns:repeat(2,1fr);}
+  .cv-body{grid-template-columns:200px 1fr;}
+}
+@media(max-width:768px){
+  .nav-links{display:none;}
+  .hbg{display:flex;}
+  .nav-btn{display:none;}
+  #hero{min-height:auto;height:auto;padding:5.5rem 5vw 3.5rem;}
+  .hero-inner{grid-template-columns:1fr;gap:0;}
+  .hero-code-col{display:none;}
+  .about-grid,.ct-grid{grid-template-columns:1fr;gap:2.5rem;}
+  .proj-grid{grid-template-columns:1fr;}
+  .cv-body{grid-template-columns:1fr;}
+  .cv-side{border-right:none;border-bottom:1px solid var(--cv-border);}
+  .cv-head{flex-direction:column;align-items:flex-start;gap:1rem;}
+  .cv-main-col{padding:1.3rem 1.5rem;}
+  section{padding:4rem 0;}
+  footer{flex-direction:column;text-align:center;align-items:center;}
+  .ct-sendbtn{width:100%;justify-content:center;}
+  .info-grid{grid-template-columns:1fr;}
+}
+@media(max-width:480px){
+  nav{padding:.75rem 1rem;}
+  .mob-menu{top:54px;}
+  #hero{padding:5rem 1rem 2.5rem;}
+  h1.hero-name{font-size:clamp(1.65rem,8vw,2.4rem);}
+  h2.s-title{font-size:clamp(1.5rem,6vw,2rem);}
+  .hero-btns{flex-direction:column;width:100%;}
+  .btn-main,.btn-sec{width:100%;justify-content:center;}
+  .hero-stats{gap:1.5rem;}
+  .skills-grid{grid-template-columns:1fr;}
+  .cv-head{padding:1.2rem;}
+  .cv-ava{width:60px;height:60px;font-size:1.3rem;}
+  .cv-head-info h2{font-size:.88rem;}
+  .cv-side,.cv-main-col{padding:1rem;}
+  .stackg{grid-template-columns:1fr;}
+  section{padding:3rem 0;}
+  .wrap{padding:0 1rem;}
+  footer{padding:1.3rem 1rem;}
+  .lang-toggle .lang-btn{font-size:.6rem;padding:.3rem .5rem;}
+}
+@media(max-width:360px){
+  h1.hero-name{font-size:1.5rem;}
+  .cv-head-info h2{font-size:.82rem;}
+}
+
+/* ══════════════════════ HERO PHOTO ══════════════════════ */
+.hero-photo-wrap{
+  position:relative;display:flex;justify-content:center;align-items:center;
+}
+.hero-photo-ring{
+  width:340px;height:340px;border-radius:50%;
+  background:linear-gradient(135deg,var(--indigo),var(--teal));
+  padding:4px;display:flex;align-items:center;justify-content:center;
+  animation:ringPulse 4s ease-in-out infinite;
+}
+@keyframes ringPulse{0%,100%{box-shadow:0 0 0 0 var(--glow);}50%{box-shadow:0 0 0 16px rgba(79,70,229,0);}}
+.hero-photo-inner{
+  width:100%;height:100%;border-radius:50%;overflow:hidden;
+  background:var(--bg3);border:4px solid var(--bg);
+}
+.hero-photo-inner img{width:100%;height:100%;object-fit:cover;}
+.hero-photo-fallback{
+  width:100%;height:100%;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#eef2ff,#f0fdfa);
+  font-family:'JetBrains Mono',monospace;font-size:3rem;font-weight:900;
+  color:var(--indigo);
+}
+/* Floating badges around photo */
+.photo-badge{
+  position:absolute;background:var(--bg2);border:1.5px solid var(--border);
+  border-radius:12px;padding:.5rem .9rem;box-shadow:var(--shadow2);
+  font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;
+  color:var(--text2);white-space:nowrap;animation:floatBadge 3s ease-in-out infinite;
+}
+.pb1{top:10%;right:-10%;animation-delay:0s;}
+.pb2{bottom:12%;right:-8%;animation-delay:1s;}
+.pb3{bottom:15%;left:-8%;animation-delay:.5s;}
+@keyframes floatBadge{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+.pb-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px;background:var(--teal);}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">MR<em>.</em>dev</a>
+  <ul class="nav-links">
+    <li><a href="#about" data-i18n="nav_about">À propos</a></li>
+    <li><a href="#skills" data-i18n="nav_skills">Compétences</a></li>
+    <li><a href="#projects" data-i18n="nav_projects">Projets</a></li>
+    <li><a href="#cv">CV</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-controls">
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btn-fr" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+    </div>
+    <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle dark mode">🌙</button>
+    <a href="#cv" class="nav-btn" data-i18n="nav_dl">⬇ CV</a>
+  </div>
+  <button class="hbg" id="hbg" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mob-menu" id="mobMenu">
+  <div class="mob-controls">
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('fr');closeMenu()">FR</button>
+      <button class="lang-btn" onclick="setLang('en');closeMenu()">EN</button>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+  </div>
+  <a href="#about" onclick="closeMenu()" data-i18n="nav_about">À propos</a>
+  <a href="#skills" onclick="closeMenu()" data-i18n="nav_skills">Compétences</a>
+  <a href="#projects" onclick="closeMenu()" data-i18n="nav_projects">Projets</a>
+  <a href="#cv" onclick="closeMenu()">CV</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+  <a href="#cv" onclick="closeMenu()" data-i18n="nav_dl">⬇ Télécharger CV</a>
+</div>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section id="hero">
+  <div class="hero-blob2"></div>
+  <div class="hero-inner">
+    <!-- LEFT -->
+    <div class="rev">
+      <div class="hero-badge">
+        <span class="live-dot"></span>
+        <span data-i18n="hero_badge">Disponible · Open to work</span>
+      </div>
+      <h1 class="hero-name">
+        <span class="n1">RAKOTONDRAZAKA</span>
+        <span class="n2">Notahinjanahary Mirajo</span>
+      </h1>
+      <p class="hero-role" id="hero-role">// Développeur Web &amp; Mobile Full-Stack</p>
+      <p class="hero-desc" data-i18n="hero_desc">Développeur passionné basé à Antananarivo · PHP/Laravel · Python/Flask · Java Android · Spring Boot · C#/.NET · Bac+3 Génie Logiciel.</p>
+      <div class="hero-btns">
+        <a href="#cv" class="btn-main" data-i18n="hero_btn1">📄 Voir mon CV</a>
+        <a href="#projects" class="btn-sec" data-i18n="hero_btn2">🚀 Mes projets</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-n" data-target="4">0</div><div class="stat-l" data-i18n="stat1">Projets réalisés</div></div>
+        <div><div class="stat-n" data-target="5">0</div><div class="stat-l" data-i18n="stat2">Technologies maîtrisées</div></div>
+        <div><div class="stat-n" data-target="3">0</div><div class="stat-l" data-i18n="stat3">Langues parlées</div></div>
+      </div>
+    </div>
+    <!-- RIGHT — Photo -->
+    <div class="hero-code-col rev d2">
+      <div class="hero-photo-wrap">
+        <div class="hero-photo-ring">
+          <div class="hero-photo-inner">
+            <img src="IMG_20260611_154940.jpg" alt="Mirajo Henry" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+            <div class="hero-photo-fallback" style="display:none">MR</div>
+          </div>
+        </div>
+        <div class="photo-badge pb1"><span class="pb-dot"></span>PHP/Laravel ⭐</div>
+        <div class="photo-badge pb2"><span class="pb-dot" style="background:var(--indigo)"></span>Full-Stack Dev</div>
+        <div class="photo-badge pb3"><span class="pb-dot" style="background:#10b981"></span>Open to Work ✓</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ ABOUT ═══════════════ -->
+<section id="about">
+  <div class="wrap">
+    <div class="rev">
+      <div class="s-chip" data-i18n="about_chip">Présentation</div>
+      <h2 class="s-title" data-i18n="about_title">À propos de <span class="acc">moi</span></h2>
+    </div>
+    <div class="about-grid">
+      <div class="rev-l d1">
+        <p class="about-p" data-i18n="about_p1">Je suis <strong>RAKOTONDRAZAKA Notahinjanahary Mirajo</strong>, développeur web et mobile passionné basé à Antananarivo, Madagascar.</p>
+        <p class="about-p" data-i18n="about_p2">Titulaire d'une Licence (Bac+3) en Génie Logiciel et Base de Données à l'ENI-Fianarantsoa. Mon expertise couvre PHP/Laravel, Python/Flask, Java Android, Spring Boot et les objets métier Sage 100C avec C#/.NET.</p>
+        <p class="about-p" data-i18n="about_p3">Autonome, rigoureux, orienté résolution de problèmes. Je maîtrise les workflows Git/GitHub et m'initie aux pratiques DevOps.</p>
+        <div class="info-grid">
+          <div class="ibox"><div class="ik" data-i18n="lbl_email">Email</div><div class="iv">mirajohenry@gmail.com</div></div>
+          <div class="ibox"><div class="ik" data-i18n="lbl_phone">Téléphone</div><div class="iv">+261 38 24 185 25</div></div>
+          <div class="ibox"><div class="ik" data-i18n="lbl_city">Ville</div><div class="iv" data-i18n="val_city">Antananarivo, Analamanga</div></div>
+          <div class="ibox"><div class="ik" data-i18n="lbl_nat">Nationalité</div><div class="iv">Malagasy 🇲🇬</div></div>
+          <div class="ibox" style="grid-column:1/-1"><div class="ik" data-i18n="lbl_degree">Diplôme</div><div class="iv" data-i18n="val_degree">Bac+3 Génie Logiciel &amp; Base de données — ENI Fianarantsoa</div></div>
+        </div>
+      </div>
+      <div class="rev-r d2">
+        <div class="s-chip" style="margin-bottom:.8rem" data-i18n="lbl_lang">Langues</div>
+        <div class="lang-row">
+          <div class="lang-badge">🇲🇬 Malagasy <span class="llvl" data-i18n="lang_native">Maternelle</span></div>
+          <div class="lang-badge">🇫🇷 Français <span class="llvl" data-i18n="lang_fluent">Maîtrise</span></div>
+          <div class="lang-badge">🇬🇧 Anglais <span class="llvl" data-i18n="lang_read">Compréhension</span></div>
+        </div>
+        <br>
+        <div class="s-chip" style="margin-bottom:.8rem" data-i18n="lbl_tools">Outils &amp; Pratiques</div>
+        <div class="pill-wrap">
+          <span class="pill">Git / GitHub</span><span class="pill">DevOps (init)</span>
+          <span class="pill t">PostgreSQL</span><span class="pill t">MySQL</span>
+          <span class="pill">Android Studio</span><span class="pill">Visual Studio</span>
+          <span class="pill t">IntelliJ IDEA</span><span class="pill">VS Code</span>
+          <span class="pill t">Postman</span><span class="pill">REST API</span>
+          <span class="pill">MVC Pattern</span><span class="pill t">OOP</span>
+        </div>
+        <div class="avail-badge">
+          <span class="live-dot"></span>
+          <span data-i18n="avail_label">Disponible — Remote / Freelance / CDI / CDD</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SKILLS ═══════════════ -->
+<section id="skills">
+  <div class="wrap">
+    <div class="rev">
+      <div class="s-chip" data-i18n="skills_chip">Technologies</div>
+      <h2 class="s-title" data-i18n="skills_title">Compétences <span class="acc">techniques</span></h2>
+    </div>
+    <div class="skills-grid">
+      <div class="sk-card rev d1"><div class="sk-icon">🌐</div><h3 data-i18n="sk1_title">Développement Web</h3><p data-i18n="sk1_desc">Applications web complètes et performantes, de la conception à la mise en production.</p><div class="sk-tags"><span class="sk-tag">PHP</span><span class="sk-tag">Laravel</span><span class="sk-tag">Python</span><span class="sk-tag">Flask</span><span class="sk-tag">HTML/CSS</span><span class="sk-tag">JavaScript</span></div></div>
+      <div class="sk-card rev d2"><div class="sk-icon">📱</div><h3 data-i18n="sk2_title">Développement Mobile</h3><p data-i18n="sk2_desc">Applications Android natives performantes, de la conception UI à l'intégration API.</p><div class="sk-tags"><span class="sk-tag">Java</span><span class="sk-tag">Android Studio</span><span class="sk-tag">Spring Boot</span><span class="sk-tag">REST API</span></div></div>
+      <div class="sk-card rev d3"><div class="sk-icon">🏢</div><h3 data-i18n="sk3_title">ERP / Sage 100C</h3><p data-i18n="sk3_desc">Maîtrise avancée des objets métier Sage 100C pour l'automatisation de gestion d'entreprise.</p><div class="sk-tags"><span class="sk-tag">C#</span><span class="sk-tag">.NET Framework</span><span class="sk-tag">Sage 100C</span><span class="sk-tag">Objets Métier</span></div></div>
+      <div class="sk-card rev d1"><div class="sk-icon">🗄️</div><h3 data-i18n="sk4_title">Base de Données</h3><p data-i18n="sk4_desc">Conception, modélisation et optimisation de bases de données relationnelles.</p><div class="sk-tags"><span class="sk-tag">PostgreSQL</span><span class="sk-tag">MySQL</span><span class="sk-tag">SQL</span><span class="sk-tag">Modélisation</span></div></div>
+      <div class="sk-card rev d2"><div class="sk-icon">🔧</div><h3 data-i18n="sk5_title">Versioning &amp; Collab</h3><p data-i18n="sk5_desc">Gestion de code source, revue de code et collaboration efficace en équipe agile.</p><div class="sk-tags"><span class="sk-tag">Git</span><span class="sk-tag">GitHub</span><span class="sk-tag">Pull Request</span><span class="sk-tag">Code Review</span></div></div>
+      <div class="sk-card rev d3"><div class="sk-icon">⚙️</div><h3 data-i18n="sk6_title">DevOps (Initiation)</h3><p data-i18n="sk6_desc">Introduction aux pratiques CI/CD, conteneurisation et automatisation du déploiement.</p><div class="sk-tags"><span class="sk-tag">CI/CD</span><span class="sk-tag">Docker</span><span class="sk-tag">Linux</span><span class="sk-tag">Déploiement</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PROJECTS ═══════════════ -->
+<section id="projects">
+  <div class="wrap">
+    <div class="rev">
+      <div class="s-chip" data-i18n="proj_chip">Réalisations</div>
+      <h2 class="s-title" data-i18n="proj_title">Projets <span class="acc">réalisés</span></h2>
+    </div>
+    <div class="proj-grid">
+      <div class="proj-card rev d1"><div class="proj-idx">PROJECT_01</div><h3 data-i18n="p1_title">Traitement Bon de Commande Mobile</h3><p data-i18n="p1_desc">Application Android complète pour la gestion des bons de commande. Flux complet depuis la saisie jusqu'à la validation avec synchronisation temps réel via Spring Boot.</p><div class="proj-stack"><span class="stag">Java</span><span class="stag">Android Studio</span><span class="stag">Spring Boot</span><span class="stag">REST API</span><span class="stag">MySQL</span></div></div>
+      <div class="proj-card rev d2"><div class="proj-idx">PROJECT_02</div><h3 data-i18n="p2_title">Gestion Grossiste Boissons</h3><p data-i18n="p2_desc">Application web complète pour un grossiste en boissons : stocks, commandes fournisseurs, clients, facturation et suivi des livraisons avec tableaux de bord.</p><div class="proj-stack"><span class="stag">PHP</span><span class="stag">Laravel</span><span class="stag">PostgreSQL</span><span class="stag">Bootstrap</span><span class="stag">JavaScript</span></div></div>
+      <div class="proj-card rev d3"><div class="proj-idx">PROJECT_03</div><h3 data-i18n="p3_title">Application Web Flask / Python</h3><p data-i18n="p3_desc">APIs REST et applications web avec Python/Flask, incluant authentification JWT, templates Jinja2, ORM SQLAlchemy et intégration base de données complète.</p><div class="proj-stack"><span class="stag">Python</span><span class="stag">Flask</span><span class="stag">SQLAlchemy</span><span class="stag">Jinja2</span><span class="stag">JWT</span></div></div>
+      <div class="proj-card rev d4"><div class="proj-idx">PROJECT_04</div><h3 data-i18n="p4_title">Intégration Sage 100C</h3><p data-i18n="p4_desc">Modules personnalisés interfacés avec Sage 100C via les objets métier pour l'automatisation complète des processus comptables et commerciaux.</p><div class="proj-stack"><span class="stag">C#</span><span class="stag">.NET Framework</span><span class="stag">Sage 100C</span><span class="stag">Objets Métier</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CV ═══════════════ -->
+<section id="cv">
+  <div class="wrap">
+    <div class="rev">
+      <div class="s-chip" data-i18n="cv_chip">Curriculum Vitae</div>
+      <h2 class="s-title" data-i18n="cv_title">Mon CV <span class="acc">complet</span></h2>
+    </div>
+    <div id="cv-print" class="rev d1">
+      <!-- Header avec photo -->
+      <div class="cv-head">
+        <div class="cv-ava">
+          <img src="IMG_20260611_154940.jpg" alt="Mirajo Henry" onerror="this.style.display='none';this.parentElement.innerHTML+='MR'"/>
+        </div>
+        <div class="cv-head-info">
+          <h2>RAKOTONDRAZAKA Notahinjanahary Mirajo</h2>
+          <div class="cv-role-tag">// Développeur Web &amp; Mobile Full-Stack</div>
+          <div class="cv-contacts">
+            <div class="cv-ci"><em>✉️</em> mirajohenry@gmail.com</div>
+            <div class="cv-ci"><em>📞</em> +261 38 24 185 25</div>
+            <div class="cv-ci"><em>📍</em> Antananarivo, Madagascar</div>
+            <div class="cv-ci"><em>🐙</em> github.com/mirajorakoto</div>
+          </div>
+        </div>
+      </div>
+      <!-- Body -->
+      <div class="cv-body">
+        <div class="cv-side">
+          <div class="cv-s">
+            <div class="cv-st" data-i18n="cv_skills">Compétences</div>
+            <div class="bitem"><div class="blbl">PHP / Laravel <span>★★★★★</span></div><div class="btrack"><div class="bfill" style="width:90%"></div></div></div>
+            <div class="bitem"><div class="blbl">Python / Flask <span>★★★★☆</span></div><div class="btrack"><div class="bfill" style="width:80%"></div></div></div>
+            <div class="bitem"><div class="blbl">Java / Android <span>★★★★☆</span></div><div class="btrack"><div class="bfill" style="width:78%"></div></div></div>
+            <div class="bitem"><div class="blbl">Spring Boot <span>★★★★☆</span></div><div class="btrack"><div class="bfill" style="width:75%"></div></div></div>
+            <div class="bitem"><div class="blbl">C# / .NET <span>★★★★☆</span></div><div class="btrack"><div class="bfill" style="width:80%"></div></div></div>
+            <div class="bitem"><div class="blbl">Sage 100C <span>★★★★★</span></div><div class="btrack"><div class="bfill" style="width:88%"></div></div></div>
+            <div class="bitem"><div class="blbl">PostgreSQL/MySQL <span>★★★★☆</span></div><div class="btrack"><div class="bfill" style="width:82%"></div></div></div>
+            <div class="bitem"><div class="blbl">Git / GitHub <span>★★★★★</span></div><div class="btrack"><div class="bfill" style="width:90%"></div></div></div>
+            <div class="bitem"><div class="blbl">DevOps <span>★★☆☆☆</span></div><div class="btrack"><div class="bfill" style="width:35%"></div></div></div>
+          </div>
+          <div class="cv-s">
+            <div class="cv-st" data-i18n="lbl_lang">Langues</div>
+            <div class="lang-cv"><div class="lname">🇲🇬 Malagasy</div><div class="ldrow"><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div></div><div class="lsub" data-i18n="lang_native">Langue maternelle</div></div>
+            <div class="lang-cv"><div class="lname">🇫🇷 Français</div><div class="ldrow"><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld"></div></div><div class="lsub" data-i18n="lang_fluent2">Maîtrise professionnelle</div></div>
+            <div class="lang-cv"><div class="lname">🇬🇧 Anglais</div><div class="ldrow"><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld"></div><div class="ld"></div></div><div class="lsub" data-i18n="lang_read2">Compréhension lecture</div></div>
+          </div>
+          <div class="cv-s">
+            <div class="cv-st" data-i18n="cv_qualities">Qualités</div>
+            <div class="qtags">
+              <span class="qtag" data-i18n="q1">Autonomie</span>
+              <span class="qtag" data-i18n="q2">Rigueur</span>
+              <span class="qtag" data-i18n="q3">Adaptabilité</span>
+              <span class="qtag" data-i18n="q4">Travail équipe</span>
+              <span class="qtag" data-i18n="q5">Veille techno</span>
+              <span class="qtag" data-i18n="q6">Problem solving</span>
+            </div>
+          </div>
+        </div>
+        <div class="cv-main-col">
+          <div class="cv-s">
+            <div class="cv-st" data-i18n="cv_profile">Profil</div>
+            <p class="profile-txt" data-i18n="cv_profile_txt">Développeur web et mobile passionné, titulaire d'un Bac+3 en Génie Logiciel et Base de Données (ENI Fianarantsoa). Maîtrise de PHP/Laravel, Python/Flask, Java Android, C#/.NET et des objets métier Sage 100C. Rigoureux, orienté qualité, pratique Git/GitHub et s'intéresse aux pratiques DevOps.</p>
+          </div>
+          <div class="cv-s">
+            <div class="cv-st" data-i18n="cv_education">Formation</div>
+            <div class="eitem">
+              <div class="erole" data-i18n="cv_degree">Licence — Bac+3 Génie Logiciel &amp; Base de Données</div>
+              <div class="eco">Ecole Nationale d'Informatique — ENI-Fianarantsoa, Madagascar</div>
+              <div class="edesc">📅 <span data-i18n="cv_graduated">Diplômé</span></div>
+            </div>
+          </div>
+          <div class="cv-s">
+            <div class="cv-st" data-i18n="cv_projects">Projets &amp; Expériences</div>
+            <div class="eitem"><div class="erole" data-i18n="p1_title">Application Mobile — Bon de Commande</div><div class="eco">Java | Android Studio | Spring Boot | REST API</div><div class="edesc" data-i18n="p1_short">Application Android de traitement des bons de commande avec synchronisation en temps réel.</div></div>
+            <div class="eitem"><div class="erole" data-i18n="p2_title">Application Web — Gestion Grossiste Boissons</div><div class="eco">PHP | Laravel | PostgreSQL | Bootstrap</div><div class="edesc" data-i18n="p2_short">Solution complète : stocks, commandes, clients, fournisseurs, facturation et livraisons.</div></div>
+            <div class="eitem"><div class="erole" data-i18n="p4_title">Intégration ERP — Sage 100C</div><div class="eco">C# | .NET Framework | Sage 100C Objets Métier</div><div class="edesc" data-i18n="p4_short">Modules personnalisés pour l'automatisation des processus comptables et commerciaux.</div></div>
+            <div class="eitem"><div class="erole" data-i18n="p3_title">API REST — Flask / Python</div><div class="eco">Python | Flask | SQLAlchemy | REST API</div><div class="edesc" data-i18n="p3_short">APIs REST avec authentification JWT, gestion des routes et intégration base de données.</div></div>
+          </div>
+          <div class="cv-s">
+            <div class="cv-st" data-i18n="cv_stack">Stack Technique</div>
+            <div class="stackg">
+              <div><div class="scat">Backend</div><div class="stagc"><span class="stagci">PHP/Laravel</span><span class="stagci">Python/Flask</span><span class="stagci">Java/Spring Boot</span><span class="stagci">C#/.NET</span></div></div>
+              <div><div class="scat">Mobile</div><div class="stagc"><span class="stagci">Java Android</span><span class="stagci">Android Studio</span><span class="stagci">REST API</span></div></div>
+              <div><div class="scat" data-i18n="cv_db">Base de données</div><div class="stagc"><span class="stagci">PostgreSQL</span><span class="stagci">MySQL</span><span class="stagci">SQL</span></div></div>
+              <div><div class="scat" data-i18n="cv_tools">Outils</div><div class="stagc"><span class="stagci">Git/GitHub</span><span class="stagci">DevOps</span><span class="stagci">VS Code</span><span class="stagci">Postman</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cv-dlbar">
+        <button class="cv-dlbtn" onclick="downloadCV()" data-i18n="cv_dl_btn">⬇ Télécharger le CV (PDF)</button>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--light)" data-i18n="cv_section_note">Section CV uniquement</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CONTACT ═══════════════ -->
+<section id="contact">
+  <div class="wrap">
+    <div class="rev">
+      <div class="s-chip" data-i18n="contact_chip">Contact</div>
+      <h2 class="s-title" data-i18n="contact_title">Travaillons <span class="acc">ensemble</span></h2>
+    </div>
+    <div class="ct-grid">
+      <div class="rev-l d1">
+        <p class="ct-desc" data-i18n="contact_desc">Vous avez un projet web ou mobile ? Besoin d'un développeur disponible en remote ? Je serais ravi d'échanger avec vous !</p>
+        <ul class="ct-list">
+          <li><div class="ct-ico">✉️</div><div><span class="ct-lbl">Email</span><span class="ct-val">mirajohenry@gmail.com</span></div></li>
+          <li><div class="ct-ico">📞</div><div><span class="ct-lbl" data-i18n="lbl_phone">Téléphone</span><span class="ct-val">+261 38 24 185 25</span></div></li>
+          <li><div class="ct-ico">📍</div><div><span class="ct-lbl" data-i18n="lbl_city">Localisation</span><span class="ct-val" data-i18n="val_city">Antananarivo, Analamanga, Madagascar</span></div></li>
+          <li><div class="ct-ico">💼</div><div><span class="ct-lbl" data-i18n="lbl_avail">Disponibilité</span><span class="ct-val" data-i18n="avail_label">Remote / Freelance / CDI / CDD</span></div></li>
+        </ul>
+        <div class="soc-row">
+          <a href="https://github.com/mirajorakoto" target="_blank" class="soc" title="GitHub">🐙</a>
+          <a href="mailto:mirajohenry@gmail.com" class="soc" title="Email">✉️</a>
+          <a href="tel:+261382418525" class="soc" title="Téléphone">📞</a>
+        </div>
+      </div>
+      <div class="rev-r d2">
+        <div class="ct-form">
+          <div class="fg"><label data-i18n="form_name">NOM_COMPLET</label><input id="fn" type="text" data-i18n-ph="ph_name" placeholder="Votre nom et prénom"/></div>
+          <div class="fg"><label>EMAIL</label><input id="fe" type="email" placeholder="votre@email.com"/></div>
+          <div class="fg"><label data-i18n="form_subject">SUJET</label><input id="fs" type="text" data-i18n-ph="ph_subject" placeholder="Proposition de projet / collaboration..."/></div>
+          <div class="fg"><label data-i18n="form_message">MESSAGE</label><textarea id="fm" data-i18n-ph="ph_message" placeholder="Décrivez votre projet ou votre besoin..."></textarea></div>
+          <div id="form-fb"></div>
+          <button class="ct-sendbtn" id="send-btn" onclick="sendMsg()" data-i18n="form_send">🚀 Envoyer le message</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>
+  <div class="ft-logo">MR<em>.</em>dev</div>
+  <p>© 2026 RAKOTONDRAZAKA Mirajo — <span data-i18n="footer_rights">Tous droits réservés</span></p>
+  
+</footer>
+
+<script>
+/* ══════════════════════════════════════
+   i18n — Translations
+══════════════════════════════════════ */
+const TRANSLATIONS = {
+  fr: {
+    nav_about:'À propos', nav_skills:'Compétences', nav_projects:'Projets', nav_dl:'⬇ Télécharger CV',
+    hero_badge:'Disponible · Open to work',
+    hero_desc:'Développeur passionné basé à Antananarivo · PHP/Laravel · Python/Flask · Java Android · Spring Boot · C#/.NET · Bac+3 Génie Logiciel.',
+    hero_btn1:'📄 Voir mon CV', hero_btn2:'🚀 Mes projets',
+    stat1:'Projets réalisés', stat2:'Technologies maîtrisées', stat3:'Langues parlées',
+    about_chip:'Présentation', about_title:'À propos de <span class="acc">moi</span>',
+    about_p1:'Je suis <strong>RAKOTONDRAZAKA Notahinjanahary Mirajo</strong>, développeur web et mobile passionné basé à Antananarivo, Madagascar.',
+    about_p2:"Titulaire d'une Licence (Bac+3) en Génie Logiciel et Base de Données à l'ENI-Fianarantsoa. Mon expertise couvre PHP/Laravel, Python/Flask, Java Android, Spring Boot et les objets métier Sage 100C avec C#/.NET.",
+    about_p3:"Autonome, rigoureux, orienté résolution de problèmes. Je maîtrise les workflows Git/GitHub et m'initie aux pratiques DevOps.",
+    lbl_email:'Email', lbl_phone:'Téléphone', lbl_city:'Ville', lbl_nat:'Nationalité',
+    lbl_degree:'Diplôme', val_city:'Antananarivo, Analamanga',
+    val_degree:'Bac+3 Génie Logiciel & Base de données — ENI Fianarantsoa',
+    lbl_lang:'Langues', lang_native:'Maternelle', lang_fluent:'Maîtrise', lang_read:'Compréhension',
+    lang_fluent2:'Maîtrise professionnelle', lang_read2:'Compréhension lecture',
+    lbl_tools:'Outils & Pratiques', avail_label:'Disponible — Remote / Freelance / CDI / CDD', lbl_avail:'Disponibilité',
+    skills_chip:'Technologies', skills_title:'Compétences <span class="acc">techniques</span>',
+    sk1_title:'Développement Web', sk1_desc:"Applications web complètes et performantes, de la conception à la mise en production.",
+    sk2_title:'Développement Mobile', sk2_desc:"Applications Android natives performantes, de la conception UI à l'intégration API.",
+    sk3_title:'ERP / Sage 100C', sk3_desc:"Maîtrise avancée des objets métier Sage 100C pour l'automatisation de gestion d'entreprise.",
+    sk4_title:'Base de Données', sk4_desc:"Conception, modélisation et optimisation de bases de données relationnelles.",
+    sk5_title:'Versioning & Collab', sk5_desc:"Gestion de code source, revue de code et collaboration efficace en équipe agile.",
+    sk6_title:'DevOps (Initiation)', sk6_desc:"Introduction aux pratiques CI/CD, conteneurisation et automatisation du déploiement.",
+    proj_chip:'Réalisations', proj_title:'Projets <span class="acc">réalisés</span>',
+    p1_title:'Traitement Bon de Commande Mobile', p1_desc:"Application Android complète pour la gestion des bons de commande. Flux complet depuis la saisie jusqu'à la validation avec synchronisation temps réel via Spring Boot.",
+    p1_short:"Application Android de traitement des bons de commande avec synchronisation en temps réel.",
+    p2_title:'Gestion Grossiste Boissons', p2_desc:"Application web complète pour un grossiste en boissons : stocks, commandes fournisseurs, clients, facturation et suivi des livraisons avec tableaux de bord.",
+    p2_short:"Solution complète : stocks, commandes, clients, fournisseurs, facturation et livraisons.",
+    p3_title:'Application Web Flask / Python', p3_desc:"APIs REST et applications web avec Python/Flask, incluant authentification JWT, templates Jinja2, ORM SQLAlchemy et intégration base de données complète.",
+    p3_short:"APIs REST avec authentification JWT, gestion des routes et intégration base de données.",
+    p4_title:'Intégration Sage 100C', p4_desc:"Modules personnalisés interfacés avec Sage 100C via les objets métier pour l'automatisation complète des processus comptables et commerciaux.",
+    p4_short:"Modules personnalisés pour l'automatisation des processus comptables et commerciaux.",
+    cv_chip:'Curriculum Vitae', cv_title:'Mon CV <span class="acc">complet</span>',
+    cv_skills:'Compétences', cv_qualities:'Qualités', cv_profile:'Profil',
+    cv_profile_txt:"Développeur web et mobile passionné, titulaire d'un Bac+3 en Génie Logiciel et Base de Données (ENI Fianarantsoa). Maîtrise de PHP/Laravel, Python/Flask, Java Android, C#/.NET et des objets métier Sage 100C. Rigoureux, orienté qualité, pratique Git/GitHub et s'intéresse aux pratiques DevOps.",
+    cv_education:'Formation', cv_degree:"Licence — Bac+3 Génie Logiciel & Base de Données", cv_graduated:'Diplômé',
+    cv_projects:'Projets & Expériences', cv_stack:'Stack Technique', cv_db:'Base de données', cv_tools:'Outils',
+    cv_dl_btn:'⬇ Télécharger le CV (PDF)', cv_section_note:'Section CV uniquement',
+    q1:'Autonomie',q2:'Rigueur',q3:'Adaptabilité',q4:'Travail équipe',q5:'Veille techno',q6:'Problem solving',
+    contact_chip:'Contact', contact_title:'Travaillons <span class="acc">ensemble</span>',
+    contact_desc:"Vous avez un projet web ou mobile ? Besoin d'un développeur disponible en remote ? Je serais ravi d'échanger avec vous !",
+    form_name:'NOM_COMPLET', ph_name:'Votre nom et prénom', form_subject:'SUJET',
+    ph_subject:'Proposition de projet / collaboration...', form_message:'MESSAGE',
+    ph_message:'Décrivez votre projet ou votre besoin...', form_send:'🚀 Envoyer le message',
+    footer_rights:'Tous droits réservés',
+    msg_fill:'⚠️ Veuillez remplir tous les champs.', msg_email:'⚠️ Email invalide.',
+    msg_sending:'⏳ Envoi...', msg_ok:'✅ Message envoyé ! Je vous répondrai bientôt.', msg_fail:'❌ Échec. Réessayez plus tard.',
+    msg_sent:'✅ Envoyé !'
+  },
+  en: {
+    nav_about:'About', nav_skills:'Skills', nav_projects:'Projects', nav_dl:'⬇ Download CV',
+    hero_badge:'Available · Open to work',
+    hero_desc:'Passionate developer based in Antananarivo · PHP/Laravel · Python/Flask · Java Android · Spring Boot · C#/.NET · BSc Software Engineering.',
+    hero_btn1:'📄 View my CV', hero_btn2:'🚀 My projects',
+    stat1:'Projects completed', stat2:'Technologies mastered', stat3:'Languages spoken',
+    about_chip:'Presentation', about_title:'About <span class="acc">me</span>',
+    about_p1:'I am <strong>RAKOTONDRAZAKA Notahinjanahary Mirajo</strong>, a passionate web and mobile developer based in Antananarivo, Madagascar.',
+    about_p2:'Bachelor of Science (BSc) in Software Engineering and Databases at ENI-Fianarantsoa. My expertise covers PHP/Laravel, Python/Flask, Java Android, Spring Boot and Sage 100C business objects with C#/.NET.',
+    about_p3:'Autonomous, rigorous, problem-oriented. I master Git/GitHub workflows and am learning DevOps practices.',
+    lbl_email:'Email', lbl_phone:'Phone', lbl_city:'City', lbl_nat:'Nationality',
+    lbl_degree:'Degree', val_city:'Antananarivo, Analamanga',
+    val_degree:'BSc Software Engineering & Databases — ENI Fianarantsoa',
+    lbl_lang:'Languages', lang_native:'Native', lang_fluent:'Fluent', lang_read:'Reading',
+    lang_fluent2:'Professional fluency', lang_read2:'Reading comprehension',
+    lbl_tools:'Tools & Practices', avail_label:'Available — Remote / Freelance / Full-time / Contract', lbl_avail:'Availability',
+    skills_chip:'Technologies', skills_title:'Technical <span class="acc">skills</span>',
+    sk1_title:'Web Development', sk1_desc:'Complete and high-performance web applications, from design to production.',
+    sk2_title:'Mobile Development', sk2_desc:'High-performance native Android apps, from UI design to API integration.',
+    sk3_title:'ERP / Sage 100C', sk3_desc:'Advanced mastery of Sage 100C business objects for enterprise management automation.',
+    sk4_title:'Databases', sk4_desc:'Design, modeling and optimization of relational databases.',
+    sk5_title:'Versioning & Collab', sk5_desc:'Source code management, code review and effective collaboration in agile teams.',
+    sk6_title:'DevOps (Learning)', sk6_desc:'Introduction to CI/CD practices, containerization and deployment automation.',
+    proj_chip:'Portfolio', proj_title:'Completed <span class="acc">projects</span>',
+    p1_title:'Mobile Purchase Order Processing', p1_desc:'Complete Android application for purchase order management. Full workflow from input to validation with real-time sync via Spring Boot.',
+    p1_short:'Android app for purchase order processing with real-time synchronization.',
+    p2_title:'Beverage Wholesaler Management', p2_desc:'Complete web application for a beverage wholesaler: stock, supplier orders, customers, invoicing and delivery tracking with dashboards.',
+    p2_short:'Complete solution: stock, orders, customers, suppliers, invoicing and deliveries.',
+    p3_title:'Flask / Python Web Application', p3_desc:'REST APIs and web apps with Python/Flask, including JWT authentication, Jinja2 templates, SQLAlchemy ORM and full database integration.',
+    p3_short:'REST APIs with JWT authentication, route management and database integration.',
+    p4_title:'Sage 100C ERP Integration', p4_desc:'Custom modules interfaced with Sage 100C via business objects for complete automation of accounting and commercial processes.',
+    p4_short:'Custom modules for automating accounting and commercial processes.',
+    cv_chip:'Curriculum Vitae', cv_title:'My complete <span class="acc">CV</span>',
+    cv_skills:'Skills', cv_qualities:'Qualities', cv_profile:'Profile',
+    cv_profile_txt:'Passionate web and mobile developer, holding a BSc in Software Engineering and Databases (ENI Fianarantsoa). Proficient in PHP/Laravel, Python/Flask, Java Android, C#/.NET and Sage 100C business objects. Rigorous, quality-focused, uses Git/GitHub and interested in DevOps practices.',
+    cv_education:'Education', cv_degree:'Bachelor — BSc Software Engineering & Databases', cv_graduated:'Graduated',
+    cv_projects:'Projects & Experience', cv_stack:'Tech Stack', cv_db:'Databases', cv_tools:'Tools',
+    cv_dl_btn:'⬇ Download CV (PDF)', cv_section_note:'CV section only',
+    q1:'Autonomy',q2:'Rigor',q3:'Adaptability',q4:'Teamwork',q5:'Tech watch',q6:'Problem solving',
+    contact_chip:'Contact', contact_title:"Let's work <span class='acc'>together</span>",
+    contact_desc:'Have a web or mobile project? Need a remote developer? I would be happy to discuss with you!',
+    form_name:'FULL_NAME', ph_name:'Your full name', form_subject:'SUBJECT',
+    ph_subject:'Project proposal / collaboration...', form_message:'MESSAGE',
+    ph_message:'Describe your project or need...', form_send:'🚀 Send message',
+    footer_rights:'All rights reserved',
+    msg_fill:'⚠️ Please fill all fields.', msg_email:'⚠️ Invalid email.',
+    msg_sending:'⏳ Sending...', msg_ok:'✅ Message sent! I will reply soon.', msg_fail:'❌ Failed. Please try again.',
+    msg_sent:'✅ Sent!'
+  }
+};
+
+let currentLang = 'fr';
+let currentTheme = 'light';
+
+function setLang(lang) {
+  currentLang = lang;
+  const t = TRANSLATIONS[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if (t[key] !== undefined) el.placeholder = t[key];
+  });
+  document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.documentElement.lang = lang;
+  // Update typing roles
+  rolesData.fr = ['// Développeur Web Full-Stack','// Développeur Mobile Android','// Intégrateur Sage 100C','// Ingénieur Logiciel'];
+  rolesData.en = ['// Full-Stack Web Developer','// Android Mobile Developer','// Sage 100C Integrator','// Software Engineer'];
+}
+
+/* ══════════════════════════════════════
+   Dark / Light theme
+══════════════════════════════════════ */
+function toggleTheme() {
+  currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', currentTheme === 'dark' ? 'dark' : '');
+  document.getElementById('theme-btn').textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+  // Sync mobile menu button
+  document.querySelectorAll('.theme-toggle').forEach(b => {
+    b.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+  });
+  localStorage.setItem('theme', currentTheme);
+}
+
+// Load saved theme
+(function(){
+  const saved = localStorage.getItem('theme');
+  if (saved === 'dark') toggleTheme();
+})();
+
+/* ══════════════════════════════════════
+   Scroll progress + nav
+══════════════════════════════════════ */
+window.addEventListener('scroll', () => {
+  const pct = (scrollY / (document.body.scrollHeight - innerHeight)) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('navbar').classList.toggle('scrolled', scrollY > 50);
+});
+
+/* ══════════════════════════════════════
+   Hamburger
+══════════════════════════════════════ */
+function toggleMenu() {
+  document.getElementById('mobMenu').classList.toggle('open');
+  document.getElementById('hbg').classList.toggle('open');
+}
+function closeMenu() {
+  document.getElementById('mobMenu').classList.remove('open');
+  document.getElementById('hbg').classList.remove('open');
+}
+document.addEventListener('click', e => {
+  const m = document.getElementById('mobMenu'), b = document.getElementById('hbg');
+  if (m.classList.contains('open') && !m.contains(e.target) && !b.contains(e.target)) closeMenu();
+});
+
+/* ══════════════════════════════════════
+   Reveal on scroll
+══════════════════════════════════════ */
+const ro = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) setTimeout(() => e.target.classList.add('in'), i * 70);
+  });
+}, { threshold: .07 });
+document.querySelectorAll('.rev,.rev-l,.rev-r').forEach(el => ro.observe(el));
+
+/* ══════════════════════════════════════
+   Typing animation
+══════════════════════════════════════ */
+const rolesData = {
+  fr: ['// Développeur Web Full-Stack','// Développeur Mobile Android','// Intégrateur Sage 100C','// Ingénieur Logiciel'],
+  en: ['// Full-Stack Web Developer','// Android Mobile Developer','// Sage 100C Integrator','// Software Engineer']
+};
+let ri = 0, ci = 0, del = false;
+const rEl = document.getElementById('hero-role');
+function type() {
+  const roles = rolesData[currentLang];
+  const c = roles[ri % roles.length];
+  if (!del && ci < c.length) { rEl.textContent = c.slice(0, ++ci); setTimeout(type, 65); }
+  else if (!del && ci === c.length) { del = true; setTimeout(type, 2400); }
+  else if (del && ci > 3) { rEl.textContent = c.slice(0, --ci); setTimeout(type, 35); }
+  else { del = false; ri = (ri + 1) % rolesData[currentLang].length; ci = 3; setTimeout(type, 400); }
+}
+type();
+
+/* ══════════════════════════════════════
+   Counters
+══════════════════════════════════════ */
+function animCount(el) {
+  const t = +el.dataset.target; let n = 0;
+  const s = () => { n += Math.ceil(t / 30); if (n >= t) n = t; el.textContent = n + (n === t ? '+' : ''); if (n < t) requestAnimationFrame(s); };
+  s();
+}
+const co = new IntersectionObserver(en => {
+  en.forEach(e => { if (e.isIntersecting) { animCount(e.target); co.unobserve(e.target); } });
+}, { threshold: .5 });
+document.querySelectorAll('[data-target]').forEach(el => co.observe(el));
+
+/* ══════════════════════════════════════
+   Download CV (print only CV section)
+══════════════════════════════════════ */
+function downloadCV() {
+  const btn = document.querySelector('.cv-dlbtn');
+  btn.textContent = '⏳ ' + (currentLang === 'fr' ? 'Préparation...' : 'Preparing...');
+  const style = document.createElement('style');
+  style.textContent = `
+    @media print{
+      html,body{height:auto!important;}
+      body>*{display:none!important;}
+      #cv{display:block!important;}
+      #cv>*{display:none!important;}
+      #cv>.wrap{display:block!important;}
+      #cv .wrap>*{display:none!important;}
+      #cv .wrap>#cv-print{display:block!important;}
+      #cv-print{box-shadow:none!important;border:none!important;border-radius:0!important;}
+      .cv-dlbar{display:none!important;}
+      .cv-head{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+      .bfill,.ld.on{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    }
+  `;
+  document.head.appendChild(style);
+  setTimeout(() => {
+    window.print();
+    document.head.removeChild(style);
+    btn.innerHTML = TRANSLATIONS[currentLang].cv_dl_btn;
+  }, 400);
+}
+
+/* ══════════════════════════════════════
+   EmailJS
+══════════════════════════════════════ */
+emailjs.init('pSjJNGMwvt6SCnsTK');
+
+function showFb(msg, ok) {
+  const fb = document.getElementById('form-fb');
+  fb.style.display = 'block';
+  fb.textContent = msg;
+  fb.style.background = ok ? '#ecfdf5' : '#fff1f2';
+  fb.style.border = ok ? '1.5px solid #a7f3d0' : '1.5px solid #fecdd3';
+  fb.style.color = ok ? '#065f46' : '#9f1239';
+  fb.style.padding = '8px';
+  fb.style.marginTop = '8px';
+  fb.style.borderRadius = '6px';
+}
+
+async function sendMsg() {
+  const t = TRANSLATIONS[currentLang];
+  const btn = document.getElementById('send-btn');
+  const n = document.getElementById('fn').value.trim();
+  const e = document.getElementById('fe').value.trim();
+  const s = document.getElementById('fs').value.trim();
+  const m = document.getElementById('fm').value.trim();
+  if (!n || !e || !s || !m) { showFb(t.msg_fill, false); return; }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(e)) { showFb(t.msg_email, false); return; }
+  btn.textContent = t.msg_sending;
+  btn.disabled = true;
+  try {
+    await emailjs.send('service_dxc6yjq', 'template_sish3vb', {
+      from_name: n, from_email: e, subject: s, message: m, to_name: 'Mirajo Henry'
+    });
+    showFb(t.msg_ok, true);
+    ['fn','fe','fs','fm'].forEach(id => document.getElementById(id).value = '');
+    btn.innerHTML = t.msg_sent;
+    btn.style.background = '#059669';
+    setTimeout(() => {
+      btn.innerHTML = t.form_send;
+      btn.style.background = '';
+      btn.disabled = false;
+    }, 4000);
+  } catch (err) {
+    console.error(err);
+    showFb(t.msg_fail, false);
+    btn.innerHTML = t.form_send;
+    btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>

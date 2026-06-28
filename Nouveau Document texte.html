@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="mg">
+<head>
+    <meta charset="UTF-8">
+    <title>MCD - Fitantanana Fako Fianarantsoa</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f2f4f7;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #1f3a5f;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        h2 {
+            color: #1f3a5f;
+            border-left: 6px solid #27ae60;
+            padding-left: 10px;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .box {
+            background: #ecf0f1;
+            padding: 10px;
+            border-left: 5px solid #3498db;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #27ae60;
+            color: white;
+            padding: 10px;
+        }
+
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        footer {
+            text-align: center;
+            background: #1f3a5f;
+            color: white;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>📊 MCD - Fitantanana Fako</h1>
+    <p>Kaominina Urbana Fianarantsoa</p>
+</header>
+
+<div class="container">
+
+    <!-- FAMPIDIRANA -->
+    <div class="card">
+        <h2>📌 1. Inona ny tanjon’ity rafitra ity?</h2>
+        <p>
+            Ity rafitra ity dia natao hitantanana ny fako ao an-tanànan’i Fianarantsoa.
+            Tafiditra ao anatin’izany ny fanangonana fako, ny fitaterana azy, ny toerana fanariana,
+            ary ny fanaraha-maso ny asa ataon’ny mpiasa sy ny mponina.
+        </p>
+    </div>
+
+    <!-- ENTITIES -->
+    <div class="card">
+        <h2>🧱 2. Ireo singa (Entités) ao amin’ny rafitra</h2>
+
+        <table>
+            <tr>
+                <th>Entité</th>
+                <th>Fanazavana</th>
+            </tr>
+
+            <tr>
+                <td>Zone</td>
+                <td>Faritra na quartier ao an-tanàna (oh: Tanambao, Andrainjato)</td>
+            </tr>
+
+            <tr>
+                <td>Ménage</td>
+                <td>Tokantrano iray mamoaka fako</td>
+            </tr>
+
+            <tr>
+                <td>Déchet</td>
+                <td>Fako vokarin’ny tokantrano (plastika, organika, metaly)</td>
+            </tr>
+
+            <tr>
+                <td>Agent</td>
+                <td>Mpiasa manangona fako</td>
+            </tr>
+
+            <tr>
+                <td>Camion</td>
+                <td>Fiara mitatitra fako</td>
+            </tr>
+
+            <tr>
+                <td>Dépot</td>
+                <td>Toerana fanariana na fanangonana fako</td>
+            </tr>
+
+            <tr>
+                <td>Collecte</td>
+                <td>Asa fanangonana fako atao amin’ny andro iray</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- EXPLICATION DETAILLEE -->
+    <div class="card">
+        <h2>🔍 3. Fanazavana amin’ny antsipiriany</h2>
+
+        <div class="box">
+            <b>📍 Zone :</b>
+            Ny tanàna dia zaraina ho faritra maro (zone). Ohatra:
+            Andrainjato, Ankofafa, Tanambao.  
+            Ny tanjona dia hahafahana mandrindra ny fanangonana fako.
+        </div>
+
+        <div class="box">
+            <b>🏠 Ménage :</b>
+            Ny ménage dia tokantrano iray. Izy no mamoaka fako isan’andro.
+            Ny tsirairay dia mifandray amin’ny zone iray.
+        </div>
+
+        <div class="box">
+            <b>🗑 Déchet :</b>
+            Ity no fako vokarin’ny tokantrano. Misy karazany:
+            plastika, organika, metaly… ary misy lanjany (kg).
+        </div>
+
+        <div class="box">
+            <b>👷 Agent :</b>
+            Ireo olona miasa manangona fako amin’ny toerana voatondro.
+        </div>
+
+        <div class="box">
+            <b>🚛 Camion :</b>
+            Fiara ampiasaina hitaterana fako avy any amin’ny zone mankany amin’ny dépot.
+        </div>
+
+        <div class="box">
+            <b>🏭 Dépot :</b>
+            Toerana fanariana na fanangonana fako (décharge).
+        </div>
+
+        <div class="box">
+            <b>📅 Collecte :</b>
+            Asa iray fanangonana fako amin’ny andro iray,
+            ataon’ny agent miaraka amin’ny camion.
+        </div>
+    </div>
+
+    <!-- RELATIONS -->
+    <div class="card">
+        <h2>🔗 4. Fifandraisana (Relations)</h2>
+
+        <div class="box">
+            <b>Zone → Ménage :</b>  
+            Ny zone iray dia ahitana ménage maro.
+        </div>
+
+        <div class="box">
+            <b>Ménage → Déchet :</b>  
+            Ny ménage iray dia mamokatra fako maro.
+        </div>
+
+        <div class="box">
+            <b>Collecte → Agent + Camion :</b>  
+            Ny collecte iray dia ataon’ny agent iray miaraka amin’ny camion iray.
+        </div>
+
+        <div class="box">
+            <b>Collecte → Ménage :</b>  
+            Ny collecte iray dia manangona fako avy amin’ny ménage maro.
+        </div>
+
+        <div class="box">
+            <b>Collecte → Dépot :</b>  
+            Ny fako voaangona dia alefa any amin’ny dépôt.
+        </div>
+    </div>
+
+    <!-- STRUCTURE -->
+    <div class="card">
+        <h2>📐 5. Structure MCD (Modely lojika)</h2>
+
+        <pre>
+ZONE (id_zone, nom_zone)
+
+MENAGE (id_menage, nom_responsable, adresse, telephone, id_zone)
+
+DECHET (id_dechet, type_dechet, quantite_kg, date_production, id_menage)
+
+AGENT (id_agent, nom, contact, poste)
+
+CAMION (id_camion, matricule, capacite_kg, etat)
+
+DEPOT (id_depot, nom_depot, localisation)
+
+COLLECTE (id_collecte, date_collecte, id_agent, id_camion, id_depot)
+
+DETAIL_COLLECTE (id_detail, id_collecte, id_menage, quantite_collectee)
+        </pre>
+    </div>
+
+    <!-- CONCLUSION -->
+    <div class="card">
+        <h2>🚀 6. Famaranana</h2>
+
+        <p>
+            Ity MCD ity dia manampy amin’ny fanatsarana ny fitantanana fako ao Fianarantsoa.
+            Manamora ny fanaraha-maso ny asa fanangonana, ny fanadihadiana statistika,
+            ary ny fanatsarana ny fahadiovan’ny tanàna.
+        </p>
+
+        <p>
+            Raha ampiharina amin’ny système informatique dia afaka manao:
+            <ul>
+                <li>✔ Fanaraha-maso real-time ny fako</li>
+                <li>✔ Statistiques (be indrindra ny fako amin’ny zone)</li>
+                <li>✔ Fitantanana agent sy camion</li>
+                <li>✔ Tatitra PDF</li>
+            </ul>
+        </p>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 - Projet Fako Fianarantsoa
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+INSERT INTO zone (nom_zone) VALUES
+('Andrainjato'),
+('Tanambao'),
+('Ankofafa'),
+('Ampasambazaha'),
+('Isaha'),
+('Talatamaty'),
+('Ambalavao'),
+('Ambalakely'),
+('Mahatsinjo'),
+('Soaindrana');
+
+INSERT INTO menage (nom_responsable, adresse, telephone, id_zone) VALUES
+('Rakoto', 'Lot I A 12', '0341111111', 1),
+('Rabe', 'Lot II B 5', '0342222222', 2),
+('Rasoa', 'Lot III C 8', '0343333333', 3),
+('Randria', 'Lot IV D 3', '0344444444', 4),
+('Rakotoarisoa', 'Lot V E 10', '0345555555', 5),
+('Rasoanaivo', 'Lot VI F 2', '0346666666', 6),
+('Ravelomanana', 'Lot VII G 7', '0347777777', 7),
+('Razafindrabe', 'Lot VIII H 9', '0348888888', 8),
+('Ratsimbazafy', 'Lot IX I 1', '0349999999', 9),
+('Rajaonarison', 'Lot X J 6', '0341010101', 10);
+
+INSERT INTO dechet (type_dechet, quantite_kg, date_production, id_menage) VALUES
+('Plastika', 5.5, '2026-06-01', 1),
+('Organika', 8.2, '2026-06-01', 2),
+('Metaly', 3.0, '2026-06-02', 3),
+('Plastika', 6.1, '2026-06-02', 4),
+('Organika', 7.0, '2026-06-03', 5),
+('Verre', 2.5, '2026-06-03', 6),
+('Plastika', 4.8, '2026-06-04', 7),
+('Organika', 9.0, '2026-06-04', 8),
+('Metaly', 3.3, '2026-06-05', 9),
+('Plastika', 5.9, '2026-06-05', 10);
+
+INSERT INTO agent (nom, contact, poste) VALUES
+('Solo', '0331111111', 'Mpaka fako'),
+('Hery', '0332222222', 'Mpaka fako'),
+('Faly', '0333333333', 'Mpitarika'),
+('Lova', '0334444444', 'Mpaka fako'),
+('Mamy', '0335555555', 'Mpaka fako'),
+('Tiana', '0336666666', 'Mpitarika'),
+('Andry', '0337777777', 'Mpaka fako'),
+('Rija', '0338888888', 'Mpaka fako'),
+('Nirina', '0339999999', 'Mpitarika'),
+('Tojo', '0331010101', 'Mpaka fako');
+
+INSERT INTO camion (matricule, capacite_kg, etat) VALUES
+('FIA-001', 5000, 'Tsara'),
+('FIA-002', 4500, 'Tsara'),
+('FIA-003', 6000, 'Miasa'),
+('FIA-004', 4000, 'Tsara'),
+('FIA-005', 5500, 'Miasa'),
+('FIA-006', 5000, 'Tsara'),
+('FIA-007', 4800, 'Tsara'),
+('FIA-008', 5200, 'Miasa'),
+('FIA-009', 4700, 'Tsara'),
+('FIA-010', 5100, 'Tsara');
+
+INSERT INTO depot (nom_depot, localisation) VALUES
+('Décharge Andrainjato', 'Avaratra Fianarantsoa'),
+('Décharge Tanambao', 'Afovoan-tanàna'),
+('Centre Ankofafa', 'Atsimo'),
+('Décharge Ampasambazaha', 'Andrefana'),
+('Centre Isaha', 'Atsinanana'),
+('Décharge Talatamaty', 'Avaratra'),
+('Centre Ambalavao', 'Lavitra Tanàna'),
+('Décharge Ambalakely', 'Atsimo-Atsinanana'),
+('Centre Mahatsinjo', 'Afovoany'),
+('Décharge Soaindrana', 'Avaratra-Atsinanana');
+
+INSERT INTO collecte (date_collecte, id_agent, id_camion, id_depot) VALUES
+('2026-06-01', 1, 1, 1),
+('2026-06-02', 2, 2, 2),
+('2026-06-03', 3, 3, 3),
+('2026-06-04', 4, 4, 4),
+('2026-06-05', 5, 5, 5),
+('2026-06-06', 6, 6, 6),
+('2026-06-07', 7, 7, 7),
+('2026-06-08', 8, 8, 8),
+('2026-06-09', 9, 9, 9),
+('2026-06-10', 10, 10, 10);
+INSERT INTO detail_collecte (id_collecte, id_menage, quantite_collectee) VALUES
+(1, 1, 5.5),
+(2, 2, 8.2),
+(3, 3, 3.0),
+(4, 4, 6.1),
+(5, 5, 7.0),
+(6, 6, 2.5),
+(7, 7, 4.8),
+(8, 8, 9.0),
+(9, 9, 3.3),
+(10, 10, 5.9);

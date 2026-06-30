@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Mirajo Rakotondrazaka · Développeur Senior Full-Stack & Expert Sage 100c ERP</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>💻</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+/* ═══════════════════════════════════════
+   TOKENS — LIGHT (default)
+   Palette : Cobalt (web) · Amber (Sage/ERP — la signature) · Teal (mobile/data)
+═══════════════════════════════════════ */
+:root{
+  --bg:#f7f8fc; --bg2:#ffffff; --bg3:#eef1fb; --surface:#ffffff; --card:#ffffff;
+  --text:#0b1220; --text2:#33415c; --muted:#5b6b85; --light:#94a0b8;
+  --cobalt:#3552ec; --cobalt2:#5b72f5;
+  --amber:#b5740d; --amber2:#dd9a2e; --amber-ink:#7a4c08;
+  --teal:#0e9488; --teal2:#14b8a6; --rose:#e11d48;
+  --border:#e3e7f3; --border2:rgba(53,82,236,.16); --border-amber:rgba(181,116,13,.3);
+  --shadow:0 1px 3px rgba(11,18,32,.08),0 4px 16px rgba(11,18,32,.06);
+  --shadow2:0 8px 32px rgba(11,18,32,.1),0 2px 8px rgba(11,18,32,.06);
+  --shadow3:0 20px 60px rgba(53,82,236,.12);
+  --shadow-amber:0 20px 50px rgba(181,116,13,.16);
+  --glow:rgba(53,82,236,.18);
+  --glow-amber:rgba(181,116,13,.22);
+  --nav-bg:rgba(247,248,252,.92);
+  --code-bg:#0f1422; --code-text:#dbe2f5;
+  --cv-side-bg:#f7f9fc;
+  --cv-border:#e3e7f3;
+  --bar-bg:#eef1f7;
+  --lang-dot-off:#e3e7f3;
+}
+
+/* ═══════════════════════════════════════
+   TOKENS — DARK
+═══════════════════════════════════════ */
+[data-theme="dark"]{
+  --bg:#0a0e16; --bg2:#11161f; --bg3:#161c28; --surface:#11161f; --card:#161c28;
+  --text:#f3f5fa; --text2:#cbd3e6; --muted:#8b96b0; --light:#5e6a85;
+  --cobalt:#7c8cff; --cobalt2:#a3aeff;
+  --amber:#f0a93f; --amber2:#ffc266; --amber-ink:#ffd596;
+  --teal:#2dd4bf; --teal2:#5eead4; --rose:#fb7185;
+  --border:#262d3d; --border2:rgba(124,140,255,.22); --border-amber:rgba(240,169,63,.28);
+  --shadow:0 1px 3px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+  --shadow2:0 8px 32px rgba(0,0,0,.5),0 2px 8px rgba(0,0,0,.3);
+  --shadow3:0 20px 60px rgba(124,140,255,.15);
+  --shadow-amber:0 20px 50px rgba(240,169,63,.14);
+  --glow:rgba(124,140,255,.25);
+  --glow-amber:rgba(240,169,63,.22);
+  --nav-bg:rgba(10,14,22,.94);
+  --code-bg:#0a0e16; --code-text:#dbe2f5;
+  --cv-side-bg:#0a0e16;
+  --cv-border:#262d3d;
+  --bar-bg:#1b2230;
+  --lang-dot-off:#1b2230;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1.6;transition:background .3s,color .3s;}
+@media (prefers-reduced-motion: reduce){*{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2.5px solid var(--cobalt2);outline-offset:2px;border-radius:4px;}
+
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--bg3);}
+::-webkit-scrollbar-thumb{background:#c7d2fe;border-radius:5px;}
+::-webkit-scrollbar-thumb:hover{background:#818cf8;}
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#30363d;}
+
+#progress{position:fixed;top:0;left:0;height:3px;z-index:999;background:linear-gradient(90deg,var(--cobalt),var(--amber),var(--teal2));width:0%;transition:width .1s;}
+
+/* ══════════════════════ NAV ══════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.9rem 5vw;
+  background:var(--nav-bg);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  transition:box-shadow .3s,background .3s;
+}
+nav.scrolled{box-shadow:var(--shadow);}
+.nav-logo{font-family:'JetBrains Mono',monospace;font-size:.92rem;font-weight:700;color:var(--cobalt);text-decoration:none;letter-spacing:.05em;display:flex;align-items:center;gap:.4rem;}
+.nav-logo em{color:var(--amber);font-style:normal;}
+.nav-links{display:flex;gap:1.8rem;list-style:none;}
+.nav-links a{font-size:.8rem;font-weight:600;color:var(--muted);text-decoration:none;letter-spacing:.01em;transition:color .2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:var(--cobalt);border-radius:2px;transition:width .3s;}
+.nav-links a:hover{color:var(--cobalt);}
+.nav-links a:hover::after{width:100%;}
+.nav-links a.sage-link{color:var(--amber-ink);}
+.nav-links a.sage-link::after{background:var(--amber);}
+[data-theme="dark"] .nav-links a.sage-link{color:var(--amber);}
+
+.nav-controls{display:flex;align-items:center;gap:.6rem;}
+
+.lang-toggle{display:flex;align-items:center;background:var(--bg3);border:1.5px solid var(--border);border-radius:8px;overflow:hidden;}
+.lang-btn{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;padding:.38rem .65rem;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;letter-spacing:.05em;}
+.lang-btn.active{background:var(--cobalt);color:#fff;}
+
+.theme-toggle{width:36px;height:36px;border-radius:8px;background:var(--bg3);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;transition:all .2s;}
+.theme-toggle:hover{border-color:var(--cobalt2);background:var(--bg);}
+
+.nav-btn{font-size:.78rem;font-weight:700;padding:.5rem 1.2rem;background:var(--cobalt);color:#fff;border-radius:8px;text-decoration:none;transition:all .25s;white-space:nowrap;box-shadow:0 2px 10px var(--glow);}
+.nav-btn:hover{background:#2a40c9;box-shadow:0 4px 18px var(--glow);transform:translateY(-1px);}
+
+.hbg{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+.hbg span{display:block;width:22px;height:2px;background:var(--cobalt);border-radius:2px;transition:all .3s;}
+.hbg.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.hbg.open span:nth-child(2){opacity:0;}
+.hbg.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+
+.mob-menu{display:none;position:fixed;top:57px;left:0;right:0;z-index:499;background:var(--bg2);border-bottom:1px solid var(--border);padding:1.2rem 1.5rem;flex-direction:column;gap:.6rem;box-shadow:var(--shadow2);max-height:calc(100vh - 57px);overflow-y:auto;}
+.mob-menu.open{display:flex;}
+.mob-menu a{font-size:.84rem;font-weight:600;color:var(--text2);text-decoration:none;padding:.6rem 0;border-bottom:1px solid var(--border);transition:color .2s;}
+.mob-menu a:last-child{border-bottom:none;background:var(--cobalt);color:#fff;padding:.7rem 1rem;border-radius:8px;text-align:center;margin-top:.3rem;font-weight:700;}
+.mob-menu a:hover{color:var(--cobalt);}
+.mob-controls{display:flex;gap:.6rem;padding:.6rem 0;border-bottom:1px solid var(--border);}
+
+/* ══════════════════════ LAYOUT ══════════════════════ */
+section{position:relative;z-index:1;width:100%;}
+.wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 5vw;}
+
+.s-chip{display:inline-flex;align-items:center;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--cobalt);background:var(--bg3);padding:.28rem .8rem;border-radius:100px;margin-bottom:.9rem;border:1px solid var(--border2);}
+.s-chip::before{content:'//';color:var(--teal);margin-right:.1rem;}
+.s-chip.amber{color:var(--amber-ink);border-color:var(--border-amber);}
+.s-chip.amber::before{color:var(--amber);}
+[data-theme="dark"] .s-chip.amber{color:var(--amber);}
+
+h2.s-title{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(1.85rem,3.6vw,2.7rem);color:var(--text);line-height:1.15;margin-bottom:2.8rem;letter-spacing:-.01em;}
+h2.s-title .acc{background:linear-gradient(135deg,var(--cobalt),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+h2.s-title .acc-amber{background:linear-gradient(135deg,var(--amber),var(--amber2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* ══════════════════════ HERO ══════════════════════ */
+#hero{min-height:100vh;display:flex;align-items:center;background:var(--bg);padding:7rem 5vw 4rem;position:relative;overflow:hidden;}
+#hero::before{content:'';position:absolute;inset:0;z-index:0;background-image:radial-gradient(circle at 1px 1px,rgba(53,82,236,.07) 1px,transparent 0);background-size:32px 32px;}
+[data-theme="dark"] #hero::before{background-image:radial-gradient(circle at 1px 1px,rgba(124,140,255,.05) 1px,transparent 0);}
+#hero::after{content:'';position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(53,82,236,.07) 0%,transparent 70%);top:-200px;right:-200px;pointer-events:none;z-index:0;}
+.hero-blob2{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(181,116,13,.06) 0%,transparent 70%);bottom:-150px;left:-100px;pointer-events:none;z-index:0;}
+.hero-inner{max-width:1180px;margin:0 auto;width:100%;display:grid;grid-template-columns:1.05fr .95fr;gap:5rem;align-items:center;position:relative;z-index:1;}
+
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.32rem .85rem;border-radius:100px;background:#ecfdf5;border:1px solid #a7f3d0;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;color:#065f46;margin-bottom:1.4rem;letter-spacing:.08em;}
+[data-theme="dark"] .hero-badge{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3);color:#6ee7b7;}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#10b981;box-shadow:0 0 0 3px rgba(16,185,129,.2);animation:livePulse 2s infinite;flex-shrink:0;}
+@keyframes livePulse{0%,100%{box-shadow:0 0 0 3px rgba(16,185,129,.2);}50%{box-shadow:0 0 0 6px rgba(16,185,129,.05);}}
+
+h1.hero-name{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.9rem,4.2vw,3.9rem);line-height:1.06;letter-spacing:-.02em;margin-bottom:.5rem;}
+.hero-name .n1{display:block;color:var(--text);}
+.hero-name .n2{display:block;font-style:italic;background:linear-gradient(135deg,var(--cobalt) 0%,var(--amber) 50%,var(--teal) 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:hShimmer 6s linear infinite;}
+@keyframes hShimmer{to{background-position:200% center;}}
+
+.hero-role{font-family:'JetBrains Mono',monospace;font-size:clamp(.72rem,1.25vw,.88rem);color:var(--cobalt2);font-weight:600;margin-bottom:1.2rem;min-height:1.4em;}
+.hero-role .crt{display:inline-block;width:2px;background:var(--amber);animation:blink 1s steps(1) infinite;margin-left:1px;}
+@keyframes blink{50%{opacity:0;}}
+.hero-desc{font-size:clamp(.88rem,1.2vw,.97rem);color:var(--muted);line-height:1.85;margin-bottom:2rem;max-width:520px;}
+.hero-desc strong{color:var(--text2);font-weight:700;}
+.hero-desc .sg{color:var(--amber-ink);font-weight:700;}
+[data-theme="dark"] .hero-desc .sg{color:var(--amber);}
+.hero-btns{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:2.5rem;}
+.btn-main{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.6rem;background:var(--cobalt);color:#fff;font-weight:700;font-size:.84rem;border-radius:10px;text-decoration:none;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 18px var(--glow);}
+.btn-main:hover{background:#2a40c9;transform:translateY(-2px);box-shadow:0 8px 28px var(--glow);}
+.btn-amber{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.6rem;background:linear-gradient(135deg,var(--amber),var(--amber2));color:#1a1102;font-weight:700;font-size:.84rem;border-radius:10px;text-decoration:none;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 18px var(--glow-amber);}
+.btn-amber:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--glow-amber);}
+.btn-sec{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.6rem;background:var(--bg2);color:var(--text2);font-weight:700;font-size:.84rem;border-radius:10px;text-decoration:none;border:1.5px solid var(--border);transition:all .25s;}
+.btn-sec:hover{border-color:var(--cobalt2);color:var(--cobalt);box-shadow:var(--shadow);}
+
+.hero-stats{display:flex;gap:2.3rem;padding-top:2rem;border-top:1px solid var(--border);flex-wrap:wrap;}
+.stat-n{font-family:'Fraunces',serif;font-size:2.1rem;font-weight:700;background:linear-gradient(135deg,var(--cobalt),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+.stat-l{font-size:.72rem;font-weight:600;color:var(--muted);margin-top:.25rem;letter-spacing:.02em;}
+
+/* ── Hero right column : photo + floating badges + mini terminal ── */
+.hero-photo-wrap{position:relative;display:flex;justify-content:center;align-items:center;}
+.hero-photo-ring{width:320px;height:320px;border-radius:50%;background:linear-gradient(135deg,var(--cobalt),var(--amber),var(--teal));padding:4px;display:flex;align-items:center;justify-content:center;animation:ringPulse 4s ease-in-out infinite;}
+@keyframes ringPulse{0%,100%{box-shadow:0 0 0 0 var(--glow);}50%{box-shadow:0 0 0 16px rgba(53,82,236,0);}}
+.hero-photo-inner{width:100%;height:100%;border-radius:50%;overflow:hidden;background:var(--bg3);border:4px solid var(--bg);}
+.hero-photo-inner img{width:100%;height:100%;object-fit:cover;display:block;}
+
+.photo-badge{position:absolute;background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;padding:.5rem .9rem;box-shadow:var(--shadow2);font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;color:var(--text2);white-space:nowrap;animation:floatBadge 3s ease-in-out infinite;}
+.pb1{top:6%;right:-12%;animation-delay:0s;}
+.pb2{bottom:32%;right:-16%;animation-delay:1s;border-color:var(--border-amber);}
+.pb3{bottom:6%;left:-10%;animation-delay:.5s;}
+@keyframes floatBadge{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+.pb-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px;background:var(--teal);}
+
+/* mini terminal badge — "code simulé" */
+.term-badge{position:absolute;left:-14%;top:14%;background:var(--code-bg);border:1.5px solid var(--border);border-radius:10px;padding:.55rem .8rem;box-shadow:var(--shadow2);font-family:'JetBrains Mono',monospace;font-size:.62rem;line-height:1.55;color:var(--code-text);width:182px;animation:floatBadge 3.6s ease-in-out infinite;animation-delay:1.6s;}
+.term-badge .tdots{display:flex;gap:3px;margin-bottom:.35rem;}
+.term-badge .td{width:6px;height:6px;border-radius:50%;}
+.term-badge .td1{background:#ff5f57;}.term-badge .td2{background:#febc2e;}.term-badge .td3{background:#28c840;}
+.term-badge .tl1{color:#7dd3fc;}
+.term-badge .tl2{color:#5eead4;}
+
+/* ══════════════════════ ABOUT ══════════════════════ */
+#about{background:var(--bg2);padding:6.5rem 0;}
+.about-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:4rem;align-items:start;}
+.about-p{color:var(--text2);line-height:1.9;margin-bottom:1rem;font-size:.93rem;}
+.about-p strong{color:var(--text);font-weight:700;}
+.about-p .sg{color:var(--amber-ink);font-weight:700;}
+[data-theme="dark"] .about-p .sg{color:var(--amber);}
+
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:1.6rem;}
+.ibox{background:var(--bg3);border:1.5px solid var(--border);border-radius:12px;padding:.9rem 1.1rem;transition:border-color .25s,transform .25s,box-shadow .25s;}
+.ibox:hover{border-color:var(--cobalt2);transform:translateY(-3px);box-shadow:var(--shadow);}
+.ik{font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:700;color:var(--teal);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.3rem;}
+.iv{font-size:.84rem;font-weight:600;color:var(--text);word-break:break-word;}
+
+.lang-row{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:.8rem;}
+.lang-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.38rem .9rem;border-radius:8px;font-size:.8rem;font-weight:600;background:var(--bg3);border:1.5px solid var(--border);color:var(--text2);transition:all .2s;}
+.lang-badge:hover{border-color:var(--cobalt2);background:var(--bg);color:var(--cobalt);}
+.llvl{font-size:.62rem;color:var(--teal);font-family:'JetBrains Mono',monospace;font-weight:700;}
+
+.pill-wrap{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem;}
+.pill{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:500;padding:.22rem .65rem;border-radius:6px;background:var(--bg3);color:var(--cobalt2);border:1px solid var(--border2);transition:all .2s;}
+.pill:hover{background:var(--bg);border-color:var(--cobalt2);}
+.pill.t{background:var(--bg3);color:var(--teal);border-color:rgba(14,148,136,.25);}
+.pill.a{background:var(--bg3);color:var(--amber-ink);border-color:var(--border-amber);}
+[data-theme="dark"] .pill.a{color:var(--amber);}
+
+.avail-badge{display:inline-flex;align-items:center;gap:.6rem;margin-top:1.5rem;padding:.5rem 1.1rem;border-radius:10px;background:#ecfdf5;border:1.5px solid #a7f3d0;font-size:.8rem;font-weight:700;color:#065f46;font-family:'JetBrains Mono',monospace;}
+[data-theme="dark"] .avail-badge{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3);color:#6ee7b7;}
+
+/* "Moi en code" panel */
+.code-card{background:var(--code-bg);border-radius:18px;border:1.5px solid var(--border);overflow:hidden;box-shadow:var(--shadow3);transition:transform .4s,box-shadow .4s;}
+.code-card:hover{transform:translateY(-5px);box-shadow:0 30px 70px rgba(53,82,236,.14);}
+.cc-top{display:flex;align-items:center;gap:.45rem;padding:.7rem 1.05rem;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.08);}
+.cd{width:10px;height:10px;border-radius:50%;}
+.cd1{background:#ff5f57;}.cd2{background:#febc2e;}.cd3{background:#28c840;}
+.cc-file{font-family:'JetBrains Mono',monospace;font-size:.63rem;color:#7f8aa8;margin-left:auto;}
+.cc-body{padding:1.3rem 1.5rem;font-family:'JetBrains Mono',monospace;font-size:clamp(.64rem,1vw,.76rem);line-height:1.95;background:var(--code-bg);color:var(--code-text);overflow-x:auto;}
+.kw{color:#c084fc;}.str{color:#5eead4;}.fn{color:#fbbf24;}.cm{color:#7f8aa8;}.wh{color:#dbe2f5;}.cl{color:#f472b6;}.amb{color:#f0a93f;font-weight:700;}
+
+/* ══════════════════════ SKILLS ══════════════════════ */
+#skills{background:var(--bg3);padding:6.5rem 0;}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:1.4rem;}
+.sk-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:16px;padding:1.6rem;transition:all .3s;position:relative;overflow:hidden;}
+.sk-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cobalt),var(--teal2));transform:scaleX(0);transform-origin:left;transition:transform .35s;}
+.sk-card:hover::before{transform:scaleX(1);}
+.sk-card:hover{transform:translateY(-5px);box-shadow:var(--shadow3);border-color:var(--border2);}
+.sk-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;background:var(--bg3);border:1.5px solid var(--border);color:var(--cobalt);}
+.sk-icon svg{width:23px;height:23px;}
+.sk-card h3{font-size:.97rem;font-weight:800;color:var(--text);margin-bottom:.45rem;display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;}
+.sk-card p{font-size:.8rem;color:var(--muted);line-height:1.7;}
+.sk-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:1rem;}
+.sk-tag{font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:500;padding:.18rem .5rem;border-radius:5px;background:var(--bg3);color:var(--teal);border:1px solid rgba(14,148,136,.25);}
+
+/* Sage flagship card variant */
+.sk-card.flagship{border-color:var(--border-amber);background:linear-gradient(160deg,var(--bg2) 60%,rgba(181,116,13,.06));}
+.sk-card.flagship::before{background:linear-gradient(90deg,var(--amber),var(--amber2));transform:scaleX(1);}
+.sk-card.flagship .sk-icon{background:linear-gradient(135deg,rgba(181,116,13,.12),rgba(221,154,46,.12));color:var(--amber-ink);border-color:var(--border-amber);}
+[data-theme="dark"] .sk-card.flagship .sk-icon{color:var(--amber);}
+.sk-card.flagship .sk-tag{color:var(--amber-ink);border-color:var(--border-amber);}
+[data-theme="dark"] .sk-card.flagship .sk-tag{color:var(--amber);}
+.xp-badge{font-family:'JetBrains Mono',monospace;font-size:.56rem;font-weight:800;letter-spacing:.08em;color:#1a1102;background:linear-gradient(135deg,var(--amber),var(--amber2));padding:.18rem .5rem;border-radius:5px;}
+
+/* ══════════════════════ SAGE FEATURE SECTION (signature) ══════════════════════ */
+#sage{background:var(--bg2);padding:6.5rem 0;position:relative;}
+.sage-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1.5rem;margin-bottom:1rem;}
+.sage-head .s-title{margin-bottom:0;}
+.sage-sub{color:var(--muted);font-size:.92rem;max-width:560px;line-height:1.8;margin-bottom:2.6rem;}
+.sage-sub strong{color:var(--text);}
+
+.sage-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;align-items:start;margin-bottom:3rem;}
+.sage-diagram-wrap{background:var(--bg3);border:1.5px solid var(--border-amber);border-radius:20px;padding:1.4rem;box-shadow:var(--shadow-amber);}
+.sage-diagram-wrap svg{width:100%;height:auto;display:block;}
+
+.sage-precision h3{font-family:'Fraunces',serif;font-size:1.25rem;font-weight:700;color:var(--text);margin-bottom:.9rem;}
+.sage-precision p{color:var(--muted);font-size:.86rem;line-height:1.85;margin-bottom:1rem;}
+.sage-list{list-style:none;display:flex;flex-direction:column;gap:.65rem;margin-top:1.2rem;}
+.sage-list li{display:flex;align-items:flex-start;gap:.6rem;font-size:.84rem;color:var(--text2);line-height:1.6;}
+.sage-list li .chk{flex-shrink:0;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--amber),var(--amber2));display:flex;align-items:center;justify-content:center;margin-top:.1rem;}
+.sage-list li .chk svg{width:11px;height:11px;stroke:#1a1102;}
+.sage-list li strong{color:var(--text);}
+
+.sage-code-row{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;}
+.sage-modules{background:var(--bg3);border:1.5px solid var(--border);border-radius:16px;padding:1.5rem 1.6rem;}
+.sage-modules h4{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:700;color:var(--amber-ink);letter-spacing:.14em;text-transform:uppercase;margin-bottom:1rem;}
+[data-theme="dark"] .sage-modules h4{color:var(--amber);}
+.sage-mod-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;}
+.sage-mod-item{font-size:.78rem;font-weight:600;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:.55rem .7rem;}
+
+@media(max-width:900px){.sage-grid{grid-template-columns:1fr;}.sage-code-row{grid-template-columns:1fr;}}
+
+/* ══════════════════════ PROJECTS ══════════════════════ */
+#projects{background:var(--bg3);padding:6.5rem 0;}
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;}
+.proj-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:16px;padding:1.9rem;position:relative;overflow:hidden;transition:all .3s;display:flex;flex-direction:column;}
+.proj-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cobalt),var(--teal2));transform:scaleX(0);transform-origin:left;transition:transform .4s;}
+.proj-card:hover::after{transform:scaleX(1);}
+.proj-card:hover{transform:translateY(-5px);box-shadow:var(--shadow3);border-color:var(--border2);}
+.proj-card.amber-card::after{background:linear-gradient(90deg,var(--amber),var(--amber2));transform:scaleX(1);}
+.proj-icon{width:42px;height:42px;border-radius:11px;background:var(--bg3);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--cobalt);margin-bottom:1rem;}
+.proj-card.amber-card .proj-icon{color:var(--amber-ink);border-color:var(--border-amber);}
+[data-theme="dark"] .proj-card.amber-card .proj-icon{color:var(--amber);}
+.proj-icon svg{width:21px;height:21px;}
+.proj-idx{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;color:var(--cobalt2);letter-spacing:.2em;margin-bottom:.75rem;display:inline-block;}
+.proj-card h3{font-size:1.02rem;font-weight:800;color:var(--text);margin-bottom:.6rem;}
+.proj-card p{color:var(--muted);font-size:.82rem;line-height:1.72;flex:1;}
+.proj-stack{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:1.1rem;}
+.stag{font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:500;padding:.2rem .52rem;border-radius:5px;background:var(--bg3);color:var(--cobalt2);border:1px solid var(--border2);}
+
+/* ══════════════════════ CV ══════════════════════ */
+#cv{background:var(--bg2);padding:6.5rem 0;}
+#cv-print{background:var(--bg3);color:var(--text);border-radius:20px;overflow:hidden;border:1.5px solid var(--border);box-shadow:var(--shadow2);}
+
+.cv-head{background:linear-gradient(135deg,#0b1220 0%,#1b2452 45%,#16352f 100%);padding:2.2rem 2.5rem;display:flex;gap:1.8rem;align-items:center;flex-wrap:wrap;position:relative;overflow:hidden;}
+.cv-head::before{content:'';position:absolute;right:-120px;top:-120px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(240,169,63,.1) 0%,transparent 60%);}
+
+.cv-ava{width:78px;height:78px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,#7c8cff,#2dd4bf);display:flex;align-items:center;justify-content:center;font-size:1.7rem;font-weight:900;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;border:3px solid rgba(255,255,255,.35);position:relative;z-index:1;overflow:hidden;}
+.cv-ava img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;}
+
+.cv-head-info{flex:1;min-width:0;position:relative;z-index:1;}
+.cv-head-info h2{font-family:'Fraunces',serif;font-size:clamp(1rem,2.4vw,1.6rem);font-weight:700;color:#f8fafc;word-break:break-word;margin-bottom:.3rem;}
+.cv-role-tag{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:#5eead4;margin-bottom:.55rem;letter-spacing:.04em;}
+.cv-spec-pill{display:inline-flex;align-items:center;gap:.4rem;background:rgba(240,169,63,.15);border:1px solid rgba(240,169,63,.45);color:#ffd596;font-family:'JetBrains Mono',monospace;font-size:.64rem;font-weight:700;padding:.28rem .7rem;border-radius:100px;margin-bottom:.7rem;}
+.cv-contacts{display:flex;flex-wrap:wrap;gap:.55rem;}
+.cv-ci{display:flex;align-items:center;gap:.35rem;font-size:.74rem;color:rgba(248,250,252,.72);}
+.cv-ci em{color:#5eead4;font-style:normal;}
+
+.cv-body{display:grid;grid-template-columns:235px 1fr;background:var(--bg2);}
+.cv-side{background:var(--cv-side-bg);padding:1.7rem;border-right:1px solid var(--cv-border);}
+.cv-main-col{padding:1.7rem 2.2rem;}
+.cv-s{margin-bottom:1.8rem;}
+.cv-st{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;color:var(--cobalt);letter-spacing:.2em;text-transform:uppercase;padding-bottom:.45rem;border-bottom:2px solid var(--border);margin-bottom:.9rem;}
+
+.bitem{margin-bottom:.8rem;}
+.bitem.featured .blbl{color:var(--amber-ink);}
+[data-theme="dark"] .bitem.featured .blbl{color:var(--amber);}
+.blbl{display:flex;justify-content:space-between;font-size:.74rem;font-weight:700;color:var(--text);margin-bottom:.3rem;}
+.blbl span{font-size:.62rem;font-weight:400;color:var(--muted);}
+.btrack{height:5px;background:var(--bar-bg);border-radius:3px;overflow:hidden;}
+.bfill{height:100%;background:linear-gradient(90deg,var(--cobalt),var(--teal));border-radius:3px;animation:fillB 1.5s ease forwards;}
+.bfill.amber-fill{background:linear-gradient(90deg,var(--amber),var(--amber2));}
+@keyframes fillB{from{width:0;}}
+
+.ldrow{display:flex;gap:3px;margin:.2rem 0 .25rem;}
+.ld{width:9px;height:9px;border-radius:50%;background:var(--lang-dot-off);}
+.ld.on{background:linear-gradient(135deg,var(--cobalt),var(--teal));}
+.lname{font-size:.82rem;font-weight:700;color:var(--text);}
+.lsub{font-size:.65rem;color:var(--muted);}
+.lang-cv{margin-bottom:.85rem;}
+
+.qtags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem;}
+.qtag{font-size:.62rem;padding:.2rem .6rem;border-radius:5px;background:var(--bg3);color:var(--cobalt);font-family:'JetBrains Mono',monospace;font-weight:600;border:1px solid var(--border2);}
+
+.profile-txt{font-size:.84rem;line-height:1.85;color:var(--muted);}
+.profile-txt .sg{color:var(--amber-ink);font-weight:700;}
+[data-theme="dark"] .profile-txt .sg{color:var(--amber);}
+.eitem{margin-bottom:1.3rem;padding-left:1.1rem;position:relative;}
+.eitem::before{content:'';position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:50%;background:linear-gradient(135deg,var(--cobalt),var(--teal));}
+.eitem.amber-pt::before{background:linear-gradient(135deg,var(--amber),var(--amber2));}
+.eitem::after{content:'';position:absolute;left:3px;top:19px;width:1px;height:calc(100% + 5px);background:var(--cv-border);}
+.eitem:last-child::after{display:none;}
+.erole{font-weight:800;font-size:.9rem;color:var(--text);margin-bottom:.15rem;}
+.eco{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--cobalt);margin-bottom:.35rem;}
+.edesc{font-size:.79rem;color:var(--muted);line-height:1.7;}
+
+.stackg{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;}
+.scat{font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:700;color:var(--cobalt);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.35rem;}
+.stagc{display:flex;flex-wrap:wrap;gap:.3rem;}
+.stagci{font-size:.6rem;padding:.15rem .45rem;border-radius:4px;background:var(--bg3);color:var(--cobalt2);font-family:'JetBrains Mono',monospace;font-weight:600;border:1px solid var(--border2);}
+.stagci.a{color:var(--amber-ink);border-color:var(--border-amber);}
+[data-theme="dark"] .stagci.a{color:var(--amber);}
+
+.cv-dlbar{display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;padding:1.3rem;border-top:1.5px solid var(--border);background:var(--bg3);}
+.cv-dlbtn{display:inline-flex;align-items:center;gap:.5rem;padding:.82rem 2rem;background:var(--cobalt);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:.82rem;border-radius:10px;border:none;cursor:pointer;transition:all .25s;box-shadow:0 4px 18px var(--glow);text-decoration:none;}
+.cv-dlbtn:hover{background:#2a40c9;transform:translateY(-2px);box-shadow:0 8px 28px var(--glow);}
+.cv-dlbtn2{display:inline-flex;align-items:center;gap:.5rem;padding:.82rem 1.6rem;background:transparent;color:var(--text2);font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:.82rem;border-radius:10px;border:1.5px solid var(--border);cursor:pointer;transition:all .25s;text-decoration:none;}
+.cv-dlbtn2:hover{border-color:var(--cobalt2);color:var(--cobalt);}
+
+/* ══════════════════════ CONTACT ══════════════════════ */
+#contact{background:var(--bg3);padding:6.5rem 0;}
+.ct-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
+.ct-desc{font-size:.93rem;color:var(--muted);line-height:1.9;margin-bottom:2rem;}
+.ct-list{list-style:none;}
+.ct-list li{display:flex;align-items:center;gap:.9rem;padding:.85rem 0;border-bottom:1px solid var(--border);}
+.ct-ico{width:40px;height:40px;flex-shrink:0;border-radius:10px;background:var(--bg2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--cobalt);transition:all .25s;}
+.ct-ico svg{width:18px;height:18px;}
+.ct-list li:hover .ct-ico{background:var(--bg);border-color:var(--cobalt2);}
+.ct-lbl{font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:700;color:var(--teal);letter-spacing:.1em;display:block;}
+.ct-val{font-size:.86rem;font-weight:600;color:var(--text);word-break:break-word;}
+.soc-row{display:flex;gap:.7rem;margin-top:1.8rem;flex-wrap:wrap;}
+.soc{width:42px;height:42px;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--text);transition:all .25s;}
+.soc svg{width:19px;height:19px;}
+.soc:hover{border-color:var(--cobalt2);background:var(--bg);transform:translateY(-3px);box-shadow:var(--shadow);}
+
+.ct-form{display:flex;flex-direction:column;gap:1rem;background:var(--bg2);border:1.5px solid var(--border);border-radius:16px;padding:1.6rem;}
+.fg{display:flex;flex-direction:column;gap:.35rem;}
+.fg label{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:700;color:var(--teal);letter-spacing:.1em;}
+.fg input,.fg textarea{background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:.78rem 1rem;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:500;outline:none;transition:all .25s;width:100%;}
+.fg input:focus,.fg textarea:focus{border-color:var(--cobalt2);box-shadow:0 0 0 3px rgba(99,102,241,.12);background:var(--bg2);}
+.fg textarea{min-height:115px;resize:vertical;}
+#form-fb{display:none;font-size:.78rem;font-weight:600;padding:.8rem 1rem;border-radius:8px;font-family:'JetBrains Mono',monospace;}
+.ct-sendbtn{display:inline-flex;align-items:center;gap:.5rem;padding:.82rem 2rem;background:var(--cobalt);color:#fff;font-weight:700;font-size:.84rem;border:none;border-radius:10px;cursor:pointer;align-self:flex-start;transition:all .25s;box-shadow:0 4px 18px var(--glow);}
+.ct-sendbtn:hover{background:#2a40c9;transform:translateY(-2px);box-shadow:0 8px 28px var(--glow);}
+.ct-sendbtn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+
+/* ══════════════════════ FOOTER ══════════════════════ */
+footer{width:100%;background:var(--bg2);border-top:1px solid var(--border);padding:1.8rem 5vw;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem;}
+.ft-logo{font-family:'JetBrains Mono',monospace;font-size:.88rem;font-weight:700;color:var(--cobalt);}
+.ft-logo em{color:var(--amber);font-style:normal;}
+footer p{font-size:.72rem;color:var(--light);}
+
+/* ══════════════════════ ANIMATIONS ══════════════════════ */
+.rev{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease;}
+.rev.in{opacity:1;transform:translateY(0);}
+.rev-l{opacity:0;transform:translateX(-28px);transition:opacity .65s ease,transform .65s ease;}
+.rev-l.in{opacity:1;transform:translateX(0);}
+.rev-r{opacity:0;transform:translateX(28px);transition:opacity .65s ease,transform .65s ease;}
+.rev-r.in{opacity:1;transform:translateX(0);}
+.d1{transition-delay:.1s;}.d2{transition-delay:.2s;}.d3{transition-delay:.3s;}.d4{transition-delay:.4s;}.d5{transition-delay:.5s;}.d6{transition-delay:.6s;}
+
+/* ══════════════════════ PRINT ══════════════════════ */
+@media print{
+  nav,.mob-menu,#hero,#about,#skills,#sage,#projects,#contact,footer,#progress,.hero-blob2{display:none!important;}
+  body{background:#fff!important;}
+  #cv{padding:0!important;background:#fff!important;}
+  #cv .s-chip,#cv h2.s-title,.cv-dlbar{display:none!important;}
+  #cv-print{box-shadow:none!important;border:none!important;border-radius:0!important;}
+  .cv-head{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .bfill,.ld.on{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+
+/* ══════════════════════ RESPONSIVE ══════════════════════ */
+@media(max-width:1024px){
+  .hero-inner{grid-template-columns:1fr;gap:2.5rem;}
+  .hero-photo-col{order:-1;max-width:280px;margin:0 auto;}
+  #hero{min-height:auto;padding:6rem 5vw 4rem;}
+  .proj-grid{grid-template-columns:repeat(2,1fr);}
+  .cv-body{grid-template-columns:200px 1fr;}
+  .sage-grid{gap:2rem;}
+}
+@media(max-width:768px){
+  .nav-links{display:none;}
+  .hbg{display:flex;}
+  .nav-btn{display:none;}
+  #hero{min-height:auto;height:auto;padding:5.5rem 5vw 3.5rem;}
+  .about-grid,.ct-grid{grid-template-columns:1fr;gap:2.5rem;}
+  .proj-grid{grid-template-columns:1fr;}
+  .cv-body{grid-template-columns:1fr;}
+  .cv-side{border-right:none;border-bottom:1px solid var(--cv-border);}
+  .cv-head{flex-direction:column;align-items:flex-start;gap:1rem;}
+  .cv-main-col{padding:1.3rem 1.5rem;}
+  section{padding:4rem 0;}
+  footer{flex-direction:column;text-align:center;align-items:center;}
+  .ct-sendbtn{width:100%;justify-content:center;}
+  .info-grid{grid-template-columns:1fr;}
+  .term-badge{display:none;}
+  .pb1,.pb2,.pb3{font-size:.6rem;padding:.4rem .7rem;}
+}
+@media(max-width:480px){
+  nav{padding:.75rem 1rem;}
+  .mob-menu{top:54px;}
+  #hero{padding:5rem 1rem 2.5rem;}
+  h1.hero-name{font-size:clamp(1.7rem,8vw,2.4rem);}
+  h2.s-title{font-size:clamp(1.55rem,6vw,2rem);}
+  .hero-btns{flex-direction:column;width:100%;}
+  .btn-main,.btn-sec,.btn-amber{width:100%;justify-content:center;}
+  .hero-stats{gap:1.5rem;}
+  .skills-grid{grid-template-columns:1fr;}
+  .cv-head{padding:1.2rem;}
+  .cv-ava{width:60px;height:60px;font-size:1.3rem;}
+  .cv-head-info h2{font-size:.88rem;}
+  .cv-side,.cv-main-col{padding:1rem;}
+  .stackg{grid-template-columns:1fr;}
+  .sage-mod-grid{grid-template-columns:1fr;}
+  section{padding:3rem 0;}
+  .wrap{padding:0 1rem;}
+  footer{padding:1.3rem 1rem;}
+  .lang-toggle .lang-btn{font-size:.6rem;padding:.3rem .5rem;}
+  .pb1,.pb2,.pb3{position:static;display:inline-flex;margin:.3rem .3rem 0 0;animation:none;}
+  .hero-photo-wrap{flex-direction:column;}
+}
+@media(max-width:360px){
+  h1.hero-name{font-size:1.5rem;}
+  .cv-head-info h2{font-size:.82rem;}
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">MR<em>.</em>dev</a>
+  <ul class="nav-links">
+    <li><a href="#about" data-i18n="nav_about">À propos</a></li>
+    <li><a href="#skills" data-i18n="nav_skills">Compétences</a></li>
+    <li><a href="#sage" class="sage-link" data-i18n="nav_sage">Sage ERP</a></li>
+    <li><a href="#projects" data-i18n="nav_projects">Projets</a></li>
+    <li><a href="#cv">CV</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-controls">
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btn-fr" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+    </div>
+    <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()" title="Toggle dark mode">🌙</button>
+    <a href="#cv" class="nav-btn" data-i18n="nav_dl">⬇ CV</a>
+  </div>
+  <button class="hbg" id="hbg" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mob-menu" id="mobMenu">
+  <div class="mob-controls">
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('fr');closeMenu()">FR</button>
+      <button class="lang-btn" onclick="setLang('en');closeMenu()">EN</button>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+  </div>
+  <a href="#about" onclick="closeMenu()" data-i18n="nav_about">À propos</a>
+  <a href="#skills" onclick="closeMenu()" data-i18n="nav_skills">Compétences</a>
+  <a href="#sage" onclick="closeMenu()" data-i18n="nav_sage">Sage ERP</a>
+  <a href="#projects" onclick="closeMenu()" data-i18n="nav_projects">Projets</a>
+  <a href="#cv" onclick="closeMenu()">CV</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+  <a href="#cv" onclick="closeMenu()" data-i18n="nav_dl">⬇ Télécharger CV</a>
+</div>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section id="hero">
+  <div class="hero-blob2"></div>
+  <div class="hero-inner">
+    <!-- LEFT -->
+    <div class="rev">
+      <div class="hero-badge">
+        <span class="live-dot"></span>
+        <span data-i18n="hero_badge">Disponible · Open to work</span>
+      </div>
+      <h1 class="hero-name">
+        <span class="n1">RAKOTONDRAZAKA</span>
+        <span class="n2">Notahinjanahary Mirajo</span>
+      </h1>
+      <p class="hero-role" id="hero-role">// Développeur Senior Full-Stack<span class="crt">&nbsp;</span></p>
+      <p class="hero-desc" data-i18n="hero_desc">Développeur <strong>senior</strong> basé à Antananarivo, expert <strong>Web</strong> (PHP/Laravel, Python/Flask, React, Vue.js, Node.js), <strong>Mobile</strong> (Java/Android, Spring Boot) et <strong>Desktop</strong> (C#/.NET) — et <span class="sg">spécialiste Sage 100c ERP</span> (objets métier, automatisation, intégration comptable &amp; commerciale).</p>
+      <div class="hero-btns">
+        <a href="#cv" class="btn-main" data-i18n="hero_btn1">📄 Voir mon CV</a>
+        <a href="#sage" class="btn-amber" data-i18n="hero_btn3">🏆 Expertise Sage ERP</a>
+        <a href="#projects" class="btn-sec" data-i18n="hero_btn2">🚀 Mes projets</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-n" data-target="6">0</div><div class="stat-l" data-i18n="stat1">Projets réalisés</div></div>
+        <div><div class="stat-n" data-target="15">0</div><div class="stat-l" data-i18n="stat2">Technologies maîtrisées</div></div>
+        <div><div class="stat-n" data-target="4">0</div><div class="stat-l" data-i18n="stat3">Domaines d'expertise</div></div>
+      </div>
+    </div>
+    <!-- RIGHT — Photo + badges + mini terminal -->
+    <div class="hero-photo-col rev d2">
+      <div class="hero-photo-wrap">
+        <div class="hero-photo-ring">
+          <div class="hero-photo-inner">
+            <img src="IMG_20260611_154940.jpg" alt="Mirajo Rakotondrazaka"/>
+          </div>
+        </div>
+        <div class="photo-badge pb1"><span class="pb-dot"></span>React · Vue · Node ⭐</div>
+        <div class="photo-badge pb2" style="border-color:var(--border-amber)"><span class="pb-dot" style="background:var(--amber)"></span><span data-i18n="pb2_text">Expert Sage 100c</span></div>
+        <div class="photo-badge pb3"><span class="pb-dot" style="background:#10b981"></span><span data-i18n="pb3_text">Open to Work ✓</span></div>
+        <div class="term-badge">
+          <div class="tdots"><span class="td td1"></span><span class="td td2"></span><span class="td td3"></span></div>
+          <div class="tl1">$ sage100c sync --module=compta</div>
+          <div class="tl2">✓ 1284 écritures OK · 0 erreur</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ ABOUT ═══════════════ -->
+<section id="about">
+  <div class="wrap">
+    <div class="rev">
+      <div class="s-chip" data-i18n="about_chip">Présentation</div>
+      <h2 class="s-title" data-i18n="about_title">À propos de <span class="acc">moi</span></h2>
+    </div>
+    <div class="about-grid">
+      <div class="rev-l d1">
+        <p class="about-p" data-i18n="about_p1">Je suis <strong>RAKOTONDRAZAKA Notahinjanahary Mirajo</strong>, développeur <strong>senior</strong> web, mobile &amp; desktop basé à Antananarivo, Madagascar.</p>
+        <p class="about-p" data-i18n="about_p2">Titulaire d'une Licence (Bac+3) en Génie Logiciel et Base de Données à l'ENI-Fianarantsoa. Mon expertise couvre PHP/Laravel, Python/Flask, React, Vue.js, Node.js, Java Android, Spring Boot et C#/.NET pour le desktop.</p>
+        <p class="about-p" data-i18n="about_p3"><span class="sg">Spécialiste Sage 100c ERP</span> : maîtrise approfondie et précise des objets métier (Comptabilité, Gestion Commerciale, Immobilisations, Trésorerie), développement de modules personnalisés en C#/.NET et automatisation de processus métier complets.</p>
+        <p class="about-p" data-i18n="about_p4">Autonome, rigoureux, orienté résolution de problèmes. Je maîtrise les workflows Git/GitHub et applique les bonnes pratiques DevOps (CI/CD, conteneurisation).</p>
+        <div class="info-grid">
+          <div class="ibox"><div class="ik" data-i18n="lbl_email">Email</div><div class="iv">mirajohenry@gmail.com</div></div>
+          <div class="ibox"><div class="ik" data-i18n="lbl_phone">Téléphone</div><div class="iv">+261 38 24 185 25</div></div>
+          <div class="ibox"><div class="ik" data-i18n="lbl_city">Ville</div><div class="iv" data-i18n="val_city">Antananarivo, Analamanga</div></div>
+          <div class="ibox"><div class="ik" data-i18n="lbl_nat">Nationalité</div><div class="iv">Malagasy 🇲🇬</div></div>
+          <div class="ibox" style="grid-column:1/-1"><div class="ik" data-i18n="lbl_degree">Diplôme</div><div class="iv" data-i18n="val_degree">Bac+3 Génie Logiciel &amp; Base de données — ENI Fianarantsoa</div></div>
+        </div>
+      </div>
+      <div class="rev-r d2">
+        <!-- "Moi en code" — code simulé -->
+        <div class="code-card">
+          <div class="cc-top"><span class="cd cd1"></span><span class="cd cd2"></span><span class="cd cd3"></span><span class="cc-file">Mirajo.php</span></div>
+          <div class="cc-body"><pre style="white-space:pre;margin:0;"><span class="kw">final class</span> <span class="cl">Mirajo</span> <span class="kw">implements</span> <span class="cl">DeveloperInterface</span>
+{
+    <span class="kw">public</span> <span class="fn">string</span> $role = <span class="str">"Senior Full-Stack Developer"</span>;
+    <span class="kw">public</span> <span class="fn">array</span> $stacks = [
+        <span class="str">"Web"</span>     => [<span class="str">"Laravel"</span>, <span class="str">"Flask"</span>, <span class="str">"React"</span>, <span class="str">"Vue.js"</span>, <span class="str">"Node.js"</span>],
+        <span class="str">"Mobile"</span>  => [<span class="str">"Java"</span>, <span class="str">"Android"</span>, <span class="str">"Spring Boot"</span>],
+        <span class="str">"Desktop"</span> => [<span class="str">"C#"</span>, <span class="str">".NET"</span>, <span class="str">"WinForms"</span>],
+        <span class="str">"ERP"</span>     => [<span class="str">"Sage 100c"</span>, <span class="str">"Objets Métier"</span>], <span class="cm">// <span class="amb">★ Expert</span></span>
+    ];
+    <span class="kw">public</span> <span class="fn">string</span> $location  = <span class="str">"Antananarivo, MG"</span>;
+    <span class="kw">public</span> <span class="fn">bool</span>   $available = <span class="kw">true</span>;
+}</pre></div>
+        </div>
+        <br>
+        <div class="s-chip" style="margin-bottom:.8rem" data-i18n="lbl_lang">Langues</div>
+        <div class="lang-row">
+          <div class="lang-badge">🇲🇬 Malagasy <span class="llvl" data-i18n="lang_native">Maternelle</span></div>
+          <div class="lang-badge">🇫🇷 Français <span class="llvl" data-i18n="lang_fluent">Maîtrise</span></div>
+          <div class="lang-badge">🇬🇧 Anglais <span class="llvl" data-i18n="lang_read">Compréhension</span></div>
+        </div>
+        <br>
+        <div class="s-chip" style="margin-bottom:.8rem" data-i18n="lbl_tools">Outils &amp; Pratiques</div>
+        <div class="pill-wrap">
+          <span class="pill">Git / GitHub</span><span class="pill">Docker</span>
+          <span class="pill t">PostgreSQL</span><span class="pill t">MySQL</span><span class="pill t">SQL Server</span>
+          <span class="pill">Android Studio</span><span class="pill">Visual Studio</span>
+          <span class="pill t">IntelliJ IDEA</span><span class="pill">VS Code</span>
+          <span class="pill t">Postman</span><span class="pill">REST API</span>
+          <span class="pill a">Sage 100c</span><span class="pill a">Objets Métier</span>
+        </div>
+        <div class="avail-badge">
+          <span class="live-dot"></span>
+          <span data-i18n="avail_label">Disponible — Remote / Freelance / CDI / CDD</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SKILLS ═══════════════ -->
+<section id="skills">
+  <div class="wrap">
+    <div class="rev">
+      <div class="s-chip" data-i18n="skills_chip">Technologies</div>
+      <h2 class="s-title" data-i18n="skills_title">Compétences <span class="acc">techniques</span></h2>
+    </div>
+    <div class="skills-grid">
+
+      <div class="sk-card rev d1">
+        <div class="sk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 17 3 12 8 7"/><polyline points="16 7 21 12 16 17"/><line x1="14" y1="4" x2="10" y2="20"/></svg></div>
+        <h3 data-i18n="sk1_title">Développement Web</h3>
+        <p data-i18n="sk1_desc">Applications web complètes et performantes, de la conception à la mise en production.</p>
+        <div class="sk-tags"><span class="sk-tag">PHP</span><span class="sk-tag">Laravel</span><span class="sk-tag">Python</span><span class="sk-tag">Flask</span><span class="sk-tag">HTML/CSS</span></div>
+      </div>
+
+      <div class="sk-card rev d2">
+        <div class="sk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/><ellipse cx="12" cy="12" rx="10" ry="4.2"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(120 12 12)"/></svg></div>
+        <h3 data-i18n="sk2_title">Frontend Moderne &amp; Node.js</h3>
+        <p data-i18n="sk2_desc">Interfaces réactives et APIs JavaScript modernes, du composant à l'API REST.</p>
+        <div class="sk-tags"><span class="sk-tag">React</span><span class="sk-tag">Vue.js</span><span class="sk-tag">Node.js</span><span class="sk-tag">Express</span><span class="sk-tag">REST API</span></div>
+      </div>
+
+      <div class="sk-card rev d3">
+        <div class="sk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg></div>
+        <h3 data-i18n="sk3_title">Développement Mobile</h3>
+        <p data-i18n="sk3_desc">Applications Android natives performantes, de la conception UI à l'intégration API.</p>
+        <div class="sk-tags"><span class="sk-tag">Java</span><span class="sk-tag">Android Studio</span><span class="sk-tag">Spring Boot</span><span class="sk-tag">REST API</span></div>
+      </div>
+
+      <div class="sk-card rev d1">
+        <div class="sk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <h3 data-i18n="sk4_title">Développement Desktop</h3>
+        <p data-i18n="sk4_desc">Logiciels de bureau robustes pour la gestion d'entreprise et l'interfaçage ERP.</p>
+        <div class="sk-tags"><span class="sk-tag">C#</span><span class="sk-tag">.NET Framework</span><span class="sk-tag">WinForms</span><span class="sk-tag">Visual Studio</span></div>
+      </div>
+
+      <div class="sk-card flagship rev d2">
+        <div class="sk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+        <h3 data-i18n="sk5_title">Sage 100c ERP <span class="xp-badge" data-i18n="xp_badge">EXPERT</span></h3>
+        <p data-i18n="sk5_desc">Maîtrise avancée et précise des objets métier Sage 100c pour l'automatisation complète de la gestion d'entreprise.</p>
+        <div class="sk-tags"><span class="sk-tag">Objets Métier</span><span class="sk-tag">C#/.NET</span><span class="sk-tag">Compta</span><span class="sk-tag">Gestion Co.</span></div>
+      </div>
+
+      <div class="sk-card rev d3">
+        <div class="sk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg></div>
+        <h3 data-i18n="sk6_title">Bases de Données</h3>
+        <p data-i18n="sk6_desc">Conception, modélisation et optimisation de bases de données relationnelles.</p>
+        <div class="sk-tags"><span class="sk-tag">PostgreSQL</span><span class="sk-tag">MySQL</span><span class="sk-tag">SQL Server</span><span class="sk-tag">Modélisation</span></div>
+      </div>
+
+      <div class="sk-card rev d1">
+        <div class="sk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg></div>
+        <h3 data-i18n="sk7_title">Outils, Versioning &amp; DevOps</h3>
+        <p data-i18n="sk7_desc">Gestion de code source, revue de code et automatisation du déploiement.</p>
+        <div class="sk-tags"><span class="sk-tag">Git</span><span class="sk-tag">GitHub</span><span class="sk-tag">Docker</span><span class="sk-tag">CI/CD</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SAGE ERP — SECTION SIGNATURE ═══════════════ -->
+<section id="sage">
+  <div class="wrap">
+    <div class="rev sage-head">
+      <div>
+        <div class="s-chip amber" data-i18n="sage_chip">Spécialisation ERP</div>
+        <h2 class="s-title" data-i18n="sage_title">Expert <span class="acc-amber">Sage 100c</span> ERP</h2>
+      </div>
+    </div>
+    <p class="sage-sub rev d1" data-i18n="sage_sub">Au-delà du développement web et mobile, je suis <strong>développeur Sage spécialisé en grande précision</strong> : interfaçage par objets métier, automatisation de processus comptables et commerciaux, requêtes et migrations de données.</p>
+
+    <div class="sage-grid">
+      <div class="sage-diagram-wrap rev-l d1">
+        <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="hubGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="var(--amber)"/>
+              <stop offset="100%" stop-color="var(--amber2)"/>
+            </linearGradient>
+          </defs>
+          <line x1="300" y1="200" x2="450" y2="200" stroke="var(--border-amber)" stroke-width="2"/>
+          <line x1="300" y1="200" x2="375" y2="70" stroke="var(--border-amber)" stroke-width="2"/>
+          <line x1="300" y1="200" x2="225" y2="70" stroke="var(--border-amber)" stroke-width="2"/>
+          <line x1="300" y1="200" x2="150" y2="200" stroke="var(--border-amber)" stroke-width="2"/>
+          <line x1="300" y1="200" x2="225" y2="330" stroke="var(--border-amber)" stroke-width="2"/>
+          <line x1="300" y1="200" x2="375" y2="330" stroke="var(--border-amber)" stroke-width="2"/>
+
+          <g>
+            <circle cx="300" cy="200" r="58" fill="url(#hubGrad)" opacity="0.15"/>
+            <circle cx="300" cy="200" r="46" fill="var(--bg2)" stroke="var(--amber)" stroke-width="2.5"/>
+            <text x="300" y="194" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10.5" font-weight="700" fill="var(--amber-ink)">SAGE 100c</text>
+            <text x="300" y="208" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="var(--muted)">OBJETS</text>
+            <text x="300" y="219" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="var(--muted)">MÉTIER</text>
+          </g>
+
+          <g>
+            <rect x="376" y="180" width="148" height="40" rx="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/>
+            <text x="450" y="196" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="var(--text)">Comptabilité</text>
+            <text x="450" y="209" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7.5" fill="var(--muted)">clsCptDocumentCompta</text>
+          </g>
+
+          <g>
+            <rect x="301" y="50" width="148" height="40" rx="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/>
+            <text x="375" y="66" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="var(--text)">Gestion Commerciale</text>
+            <text x="375" y="79" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7.5" fill="var(--muted)">Vente / Achat</text>
+          </g>
+
+          <g>
+            <rect x="151" y="50" width="148" height="40" rx="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/>
+            <text x="225" y="66" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="var(--text)">Stock &amp; Articles</text>
+            <text x="225" y="79" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7.5" fill="var(--muted)">clsCptArticle</text>
+          </g>
+
+          <g>
+            <rect x="76" y="180" width="148" height="40" rx="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/>
+            <text x="150" y="196" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="var(--text)">Tiers / CRM</text>
+            <text x="150" y="209" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7.5" fill="var(--muted)">Clients / Fournisseurs</text>
+          </g>
+
+          <g>
+            <rect x="151" y="310" width="148" height="40" rx="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/>
+            <text x="225" y="326" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="var(--text)">Trésorerie</text>
+            <text x="225" y="339" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7.5" fill="var(--muted)">Règlements</text>
+          </g>
+
+          <g>
+            <rect x="301" y="310" width="148" height="40" rx="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/>
+            <text x="375" y="326" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700" fill="var(--text)">Immobilisations</text>
+            <text x="375" y="339" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="7.5" fill="var(--muted)">Amortissements</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="sage-precision rev-r d2">
+        <h3 data-i18n="sage_h3">Précision &amp; profondeur technique</h3>
+        <p data-i18n="sage_p1">Je n'utilise pas Sage 100c uniquement comme un logiciel : je le <strong>développe</strong>. Mes modules s'interfacent directement avec le moteur d'objets métier pour automatiser des processus complets, de la saisie d'un document jusqu'à sa validation comptable.</p>
+        <ul class="sage-list">
+          <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span data-i18n="sage_li1"><strong>Objets métier</strong> — Document, Tiers, Article, Compte, Règlement (C#/.NET)</span></li>
+          <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span data-i18n="sage_li2"><strong>Automatisation</strong> — facturation, relances, écritures comptables générées</span></li>
+          <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span data-i18n="sage_li3"><strong>Requêtes &amp; extractions</strong> — SQL natif et objets métier combinés</span></li>
+          <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span data-i18n="sage_li4"><strong>Interfaçage</strong> — connecteurs tiers, import/export, migrations de données</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sage-code-row">
+      <div class="code-card rev d3" style="margin:0;">
+        <div class="cc-top"><span class="cd cd1"></span><span class="cd cd2"></span><span class="cd cd3"></span><span class="cc-file">FactureAuto.cs</span></div>
+        <div class="cc-body"><pre style="white-space:pre;margin:0;"><span class="cm">// Connexion à la base Sage 100c</span>
+<span class="kw">var</span> cptBase = <span class="kw">new</span> <span class="cl">clsCptBase</span>();
+cptBase.<span class="fn">Ouvrir</span>(dossier, <span class="str">"ADMIN"</span>, motDePasse);
+
+<span class="cm">// Lecture / création d'un document de vente</span>
+<span class="kw">var</span> doc = <span class="kw">new</span> <span class="cl">clsCptDocumentVente</span>(cptBase);
+doc.<span class="fn">Lire</span>(<span class="str">"FA"</span>, annee: 2026, numero: 134);
+
+doc.Tiers.CodeTiers = <span class="str">"CL00021"</span>;
+doc.DateDocument     = DateTime.Now;
+doc.<span class="fn">AjouterLigne</span>(article, qte: 12);
+
+doc.<span class="fn">Valider</span>();  <span class="cm">// → écriture comptable générée</span>
+cptBase.<span class="fn">Fermer</span>();</pre></div>
+      </div>
+
+      <div class="sage-modules rev d4">
+        <h4 data-i18n="sage_mod_title">Modules &amp; compétences précises</h4>
+        <div class="sage-mod-grid">
+          <div class="sage-mod-item" data-i18n="sage_m1">Objets Métier (clsCpt*)</div>
+          <div class="sage-mod-item" data-i18n="sage_m2">Comptabilité générale</div>
+          <div class="sage-mod-item" data-i18n="sage_m3">Gestion Commerciale</div>
+          <div class="sage-mod-item" data-i18n="sage_m4">Immobilisations</div>
+          <div class="sage-mod-item" data-i18n="sage_m5">Trésorerie</div>
+          <div class="sage-mod-item" data-i18n="sage_m6">Requêtes SQL avancées</div>
+          <div class="sage-mod-item" data-i18n="sage_m7">Modules C#/.NET sur mesure</div>
+          <div class="sage-mod-item" data-i18n="sage_m8">Migration de données</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PROJECTS ═══════════════ -->
+<section id="projects">
+  <div class="wrap">
+    <div class="rev">
+      <div class="s-chip" data-i18n="proj_chip">Réalisations</div>
+      <h2 class="s-title" data-i18n="proj_title">Projets <span class="acc">réalisés</span></h2>
+    </div>
+    <div class="proj-grid">
+
+      <div class="proj-card rev d1">
+        <div class="proj-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg></div>
+        <div class="proj-idx">PROJECT_01</div>
+        <h3 data-i18n="p1_title">Traitement Bon de Commande Mobile</h3>
+        <p data-i18n="p1_desc">Application Android complète pour la gestion des bons de commande. Flux complet depuis la saisie jusqu'à la validation avec synchronisation temps réel via Spring Boot.</p>
+        <div class="proj-stack"><span class="stag">Java</span><span class="stag">Android Studio</span><span class="stag">Spring Boot</span><span class="stag">REST API</span><span class="stag">MySQL</span></div>
+      </div>
+
+      <div class="proj-card rev d2">
+        <div class="proj-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 17 3 12 8 7"/><polyline points="16 7 21 12 16 17"/><line x1="14" y1="4" x2="10" y2="20"/></svg></div>
+        <div class="proj-idx">PROJECT_02</div>
+        <h3 data-i18n="p2_title">Gestion Grossiste Boissons</h3>
+        <p data-i18n="p2_desc">Application web complète pour un grossiste en boissons : stocks, commandes fournisseurs, clients, facturation et suivi des livraisons avec tableaux de bord.</p>
+        <div class="proj-stack"><span class="stag">PHP</span><span class="stag">Laravel</span><span class="stag">PostgreSQL</span><span class="stag">Bootstrap</span><span class="stag">JavaScript</span></div>
+      </div>
+
+      <div class="proj-card rev d3">
+        <div class="proj-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 17 3 12 8 7"/><polyline points="16 7 21 12 16 17"/><line x1="14" y1="4" x2="10" y2="20"/></svg></div>
+        <div class="proj-idx">PROJECT_03</div>
+        <h3 data-i18n="p3_title">Application Web Flask / Python</h3>
+        <p data-i18n="p3_desc">APIs REST et applications web avec Python/Flask, incluant authentification JWT, templates Jinja2, ORM SQLAlchemy et intégration base de données complète.</p>
+        <div class="proj-stack"><span class="stag">Python</span><span class="stag">Flask</span><span class="stag">SQLAlchemy</span><span class="stag">Jinja2</span><span class="stag">JWT</span></div>
+      </div>
+
+      <div class="proj-card amber-card rev d4">
+        <div class="proj-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+        <div class="proj-idx">PROJECT_04 · <span data-i18n="xp_badge2">EXPERT</span></div>
+        <h3 data-i18n="p4_title">Intégration &amp; Automatisation Sage 100c</h3>
+        <p data-i18n="p4_desc">Modules personnalisés interfacés avec Sage 100c via les objets métier : automatisation complète des processus comptables et commerciaux, génération d'écritures, requêtes avancées et migration de données.</p>
+        <div class="proj-stack"><span class="stag">C#</span><span class="stag">.NET Framework</span><span class="stag">Sage 100c</span><span class="stag">Objets Métier</span><span class="stag">SQL</span></div>
+      </div>
+
+      <div class="proj-card rev d5">
+        <div class="proj-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/><ellipse cx="12" cy="12" rx="10" ry="4.2"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(120 12 12)"/></svg></div>
+        <div class="proj-idx">PROJECT_05</div>
+        <h3 data-i18n="p5_title">Dashboard Analytique React &amp; Node.js</h3>
+        <p data-i18n="p5_desc">Tableau de bord interactif avec API Node.js/Express et interface React, visualisation de données en temps réel et composants Vue.js réutilisables.</p>
+        <div class="proj-stack"><span class="stag">React</span><span class="stag">Vue.js</span><span class="stag">Node.js</span><span class="stag">Express</span><span class="stag">REST API</span></div>
+      </div>
+
+      <div class="proj-card rev d6">
+        <div class="proj-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <div class="proj-idx">PROJECT_06</div>
+        <h3 data-i18n="p6_title">Logiciel Desktop de Gestion</h3>
+        <p data-i18n="p6_desc">Application desktop C#/.NET (WinForms) pour la gestion interne : facturation, stocks et reporting, avec base de données SQL Server.</p>
+        <div class="proj-stack"><span class="stag">C#</span><span class="stag">.NET</span><span class="stag">WinForms</span><span class="stag">SQL Server</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CV ═══════════════ -->
+<section id="cv">
+  <div class="wrap">
+    <div class="rev">
+      <div class="s-chip" data-i18n="cv_chip">Curriculum Vitae</div>
+      <h2 class="s-title" data-i18n="cv_title">Mon CV <span class="acc">complet</span></h2>
+    </div>
+    <div id="cv-print" class="rev d1">
+      <!-- Header avec photo -->
+      <div class="cv-head">
+        <div class="cv-ava">
+          <img src="IMG_20260611_154940.jpg" alt="Mirajo Rakotondrazaka"/>
+        </div>
+        <div class="cv-head-info">
+          <h2>RAKOTONDRAZAKA Notahinjanahary Mirajo</h2>
+          <div class="cv-role-tag">// <span data-i18n="cv_role_tag">Développeur Senior Full-Stack — Web · Mobile · Desktop</span></div>
+          <div class="cv-spec-pill">🏆 <span data-i18n="cv_spec_pill">Expert Sage 100c ERP</span></div>
+          <div class="cv-contacts">
+            <div class="cv-ci"><em>✉️</em> mirajohenry@gmail.com</div>
+            <div class="cv-ci"><em>📞</em> +261 38 24 185 25</div>
+            <div class="cv-ci"><em>📍</em> Antananarivo, Madagascar</div>
+            <div class="cv-ci"><em>🐙</em> github.com/mirajorakoto</div>
+          </div>
+        </div>
+      </div>
+      <!-- Body -->
+      <div class="cv-body">
+        <div class="cv-side">
+          <div class="cv-s">
+            <div class="cv-st" data-i18n="cv_skills">Compétences</div>
+            <div class="bitem featured"><div class="blbl">Sage 100c ERP <span data-i18n="lvl_expert">★★★★★ Expert</span></div><div class="btrack"><div class="bfill amber-fill" style="width:95%"></div></div></div>
+            <div class="bitem"><div class="blbl">PHP / Laravel <span>★★★★★</span></div><div class="btrack"><div class="bfill" style="width:90%"></div></div></div>
+            <div class="bitem"><div class="blbl">C# / .NET (Desktop) <span>★★★★★</span></div><div class="btrack"><div class="bfill" style="width:88%"></div></div></div>
+            <div class="bitem"><div class="blbl">Python / Flask <span>★★★★☆</span></div><div class="btrack"><div class="bfill" style="width:80%"></div></div></div>
+            <div class="bitem"><div class="blbl">React / Vue.js <span>★★★★☆</span></div><div class="btrack"><div class="bfill" style="width:78%"></div></div></div>
+            <div class="bitem"><div class="blbl">Node.js / Express <span>★★★★☆</span></div><div class="btrack"><div class="bfill" style="width:76%"></div></div></div>
+            <div class="bitem"><div class="blbl">Java / Android <span>★★★★☆</span></div><div class="btrack"><div class="bfill" style="width:78%"></div></div></div>
+            <div class="bitem"><div class="blbl">Spring Boot <span>★★★★☆</span></div><div class="btrack"><div class="bfill" style="width:75%"></div></div></div>
+            <div class="bitem"><div class="blbl">PostgreSQL/MySQL <span>★★★★☆</span></div><div class="btrack"><div class="bfill" style="width:82%"></div></div></div>
+            <div class="bitem"><div class="blbl">Git / GitHub <span>★★★★★</span></div><div class="btrack"><div class="bfill" style="width:90%"></div></div></div>
+            <div class="bitem"><div class="blbl">DevOps (Docker/CI) <span>★★★☆☆</span></div><div class="btrack"><div class="bfill" style="width:48%"></div></div></div>
+          </div>
+          <div class="cv-s">
+            <div class="cv-st" data-i18n="lbl_lang">Langues</div>
+            <div class="lang-cv"><div class="lname">🇲🇬 Malagasy</div><div class="ldrow"><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div></div><div class="lsub" data-i18n="lang_native">Langue maternelle</div></div>
+            <div class="lang-cv"><div class="lname">🇫🇷 Français</div><div class="ldrow"><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld"></div></div><div class="lsub" data-i18n="lang_fluent2">Maîtrise professionnelle</div></div>
+            <div class="lang-cv"><div class="lname">🇬🇧 Anglais</div><div class="ldrow"><div class="ld on"></div><div class="ld on"></div><div class="ld on"></div><div class="ld"></div><div class="ld"></div></div><div class="lsub" data-i18n="lang_read2">Compréhension lecture</div></div>
+          </div>
+          <div class="cv-s">
+            <div class="cv-st" data-i18n="cv_qualities">Qualités</div>
+            <div class="qtags">
+              <span class="qtag" data-i18n="q1">Autonomie</span>
+              <span class="qtag" data-i18n="q2">Rigueur</span>
+              <span class="qtag" data-i18n="q3">Adaptabilité</span>
+              <span class="qtag" data-i18n="q4">Travail équipe</span>
+              <span class="qtag" data-i18n="q5">Veille techno</span>
+              <span class="qtag" data-i18n="q6">Problem solving</span>
+            </div>
+          </div>
+        </div>
+        <div class="cv-main-col">
+          <div class="cv-s">
+            <div class="cv-st" data-i18n="cv_profile">Profil</div>
+            <p class="profile-txt" data-i18n="cv_profile_txt">Développeur <strong>senior</strong> full-stack, titulaire d'un Bac+3 en Génie Logiciel et Base de Données (ENI Fianarantsoa). Maîtrise de PHP/Laravel, Python/Flask, React, Vue.js, Node.js, Java Android et C#/.NET pour le desktop. <span class="sg">Spécialiste Sage 100c ERP</span> : objets métier, automatisation comptable et commerciale en grande précision. Rigoureux, orienté qualité, pratique Git/GitHub et les pratiques DevOps.</p>
+          </div>
+          <div class="cv-s">
+            <div class="cv-st" data-i18n="cv_education">Formation</div>
+            <div class="eitem">
+              <div class="erole" data-i18n="cv_degree">Licence — Bac+3 Génie Logiciel &amp; Base de Données</div>
+              <div class="eco">Ecole Nationale d'Informatique — ENI-Fianarantsoa, Madagascar</div>
+              <div class="edesc">📅 <span data-i18n="cv_graduated">Diplômé</span></div>
+            </div>
+          </div>
+          <div class="cv-s">
+            <div class="cv-st" data-i18n="cv_projects">Projets &amp; Expériences</div>
+            <div class="eitem amber-pt"><div class="erole" data-i18n="p4_title">Intégration &amp; Automatisation Sage 100c <span class="xp-badge" data-i18n="xp_badge">EXPERT</span></div><div class="eco">C# | .NET Framework | Sage 100c Objets Métier</div><div class="edesc" data-i18n="p4_short">Modules personnalisés pour l'automatisation des processus comptables et commerciaux en grande précision.</div></div>
+            <div class="eitem"><div class="erole" data-i18n="p1_title">Application Mobile — Bon de Commande</div><div class="eco">Java | Android Studio | Spring Boot | REST API</div><div class="edesc" data-i18n="p1_short">Application Android de traitement des bons de commande avec synchronisation en temps réel.</div></div>
+            <div class="eitem"><div class="erole" data-i18n="p2_title">Application Web — Gestion Grossiste Boissons</div><div class="eco">PHP | Laravel | PostgreSQL | Bootstrap</div><div class="edesc" data-i18n="p2_short">Solution complète : stocks, commandes, clients, fournisseurs, facturation et livraisons.</div></div>
+            <div class="eitem"><div class="erole" data-i18n="p5_title">Dashboard Analytique React &amp; Node.js</div><div class="eco">React | Vue.js | Node.js | Express</div><div class="edesc" data-i18n="p5_short">Tableau de bord interactif avec API REST et visualisation de données temps réel.</div></div>
+            <div class="eitem"><div class="erole" data-i18n="p3_title">API REST — Flask / Python</div><div class="eco">Python | Flask | SQLAlchemy | REST API</div><div class="edesc" data-i18n="p3_short">APIs REST avec authentification JWT, gestion des routes et intégration base de données.</div></div>
+            <div class="eitem"><div class="erole" data-i18n="p6_title">Logiciel Desktop de Gestion</div><div class="eco">C# | .NET | WinForms | SQL Server</div><div class="edesc" data-i18n="p6_short">Application desktop de facturation, stocks et reporting.</div></div>
+          </div>
+          <div class="cv-s">
+            <div class="cv-st" data-i18n="cv_stack">Stack Technique</div>
+            <div class="stackg">
+              <div><div class="scat">Backend</div><div class="stagc"><span class="stagci">PHP/Laravel</span><span class="stagci">Python/Flask</span><span class="stagci">Java/Spring Boot</span><span class="stagci">Node.js</span></div></div>
+              <div><div class="scat" data-i18n="cv_frontend">Frontend Moderne</div><div class="stagc"><span class="stagci">React</span><span class="stagci">Vue.js</span><span class="stagci">JavaScript</span><span class="stagci">HTML/CSS</span></div></div>
+              <div><div class="scat" data-i18n="cv_mobdesk">Mobile &amp; Desktop</div><div class="stagc"><span class="stagci">Java Android</span><span class="stagci">C#/.NET</span><span class="stagci">WinForms</span></div></div>
+              <div><div class="scat amb-cat" style="color:var(--amber-ink)" data-i18n="cv_erp">Sage 100c ERP</div><div class="stagc"><span class="stagci a">Objets Métier</span><span class="stagci a">Automatisation</span></div></div>
+              <div><div class="scat" data-i18n="cv_db">Base de données</div><div class="stagc"><span class="stagci">PostgreSQL</span><span class="stagci">MySQL</span><span class="stagci">SQL Server</span></div></div>
+              <div><div class="scat" data-i18n="cv_tools">Outils</div><div class="stagc"><span class="stagci">Git/GitHub</span><span class="stagci">Docker</span><span class="stagci">Postman</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cv-dlbar">
+        <a class="cv-dlbtn" href="RAKOTONDRAZAKA Mirajo_Dev_Full-Stack - Copie.pdf" download="RAKOTONDRAZAKA_Mirajo_CV.pdf" data-i18n="cv_dl_btn">⬇ Télécharger le CV (PDF)</a>
+        <a class="cv-dlbtn2" href="RAKOTONDRAZAKA Mirajo_Dev_Full-Stack - Copie.pdf" target="_blank" rel="noopener" data-i18n="cv_view_btn">👁 Aperçu du PDF</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CONTACT ═══════════════ -->
+<section id="contact">
+  <div class="wrap">
+    <div class="rev">
+      <div class="s-chip" data-i18n="contact_chip">Contact</div>
+      <h2 class="s-title" data-i18n="contact_title">Travaillons <span class="acc">ensemble</span></h2>
+    </div>
+    <div class="ct-grid">
+      <div class="rev-l d1">
+        <p class="ct-desc" data-i18n="contact_desc">Vous avez un projet web, mobile ou desktop ? Besoin d'un développeur senior disponible en remote ou d'un expert Sage 100c pour automatiser votre gestion ? Je serais ravi d'échanger avec vous !</p>
+        <ul class="ct-list">
+          <li><div class="ct-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2 7 12 13 22 7"/></svg></div><div><span class="ct-lbl">Email</span><span class="ct-val">mirajohenry@gmail.com</span></div></li>
+          <li><div class="ct-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><span class="ct-lbl" data-i18n="lbl_phone">Téléphone</span><span class="ct-val">+261 38 24 185 25</span></div></li>
+          <li><div class="ct-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><span class="ct-lbl" data-i18n="lbl_city">Localisation</span><span class="ct-val" data-i18n="val_city">Antananarivo, Analamanga, Madagascar</span></div></li>
+          <li><div class="ct-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div><div><span class="ct-lbl" data-i18n="lbl_avail">Disponibilité</span><span class="ct-val" data-i18n="avail_label">Remote / Freelance / CDI / CDD</span></div></li>
+        </ul>
+        <div class="soc-row">
+          <a href="https://github.com/mirajorakoto" target="_blank" class="soc" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.98 5.24.98 11.52c0 4.93 3.2 9.11 7.64 10.59.56.1.76-.24.76-.54 0-.27-.01-1.16-.02-2.1-3.11.68-3.77-1.32-3.77-1.32-.5-1.29-1.23-1.63-1.23-1.63-1-.69.08-.67.08-.67 1.11.08 1.69 1.14 1.69 1.14.98 1.68 2.58 1.2 3.21.92.1-.71.39-1.2.7-1.48-2.48-.28-5.1-1.24-5.1-5.51 0-1.22.43-2.21 1.14-3-.11-.28-.5-1.42.11-2.96 0 0 .94-.3 3.07 1.14a10.6 10.6 0 0 1 5.58 0c2.13-1.44 3.07-1.14 3.07-1.14.61 1.54.22 2.68.11 2.96.71.79 1.14 1.78 1.14 3 0 4.28-2.63 5.23-5.12 5.5.4.35.76 1.04.76 2.1 0 1.52-.01 2.74-.01 3.11 0 .3.2.65.77.54a11.04 11.04 0 0 0 7.63-10.59C23.02 5.24 18.27.5 12 .5z"/></svg></a>
+          <a href="mailto:mirajohenry@gmail.com" class="soc" title="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2 7 12 13 22 7"/></svg></a>
+          <a href="tel:+261382418525" class="soc" title="Téléphone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+        </div>
+      </div>
+      <div class="rev-r d2">
+        <div class="ct-form">
+          <div class="fg"><label data-i18n="form_name">NOM_COMPLET</label><input id="fn" type="text" data-i18n-ph="ph_name" placeholder="Votre nom et prénom"/></div>
+          <div class="fg"><label>EMAIL</label><input id="fe" type="email" placeholder="votre@email.com"/></div>
+          <div class="fg"><label data-i18n="form_subject">SUJET</label><input id="fs" type="text" data-i18n-ph="ph_subject" placeholder="Proposition de projet / collaboration..."/></div>
+          <div class="fg"><label data-i18n="form_message">MESSAGE</label><textarea id="fm" data-i18n-ph="ph_message" placeholder="Décrivez votre projet ou votre besoin..."></textarea></div>
+          <div id="form-fb"></div>
+          <button class="ct-sendbtn" id="send-btn" onclick="sendMsg()" data-i18n="form_send">🚀 Envoyer le message</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>
+  <div class="ft-logo">MR<em>.</em>dev</div>
+  <p>© 2026 RAKOTONDRAZAKA Mirajo — <span data-i18n="footer_rights">Tous droits réservés</span></p>
+</footer>
+
+<script>
+/* ══════════════════════════════════════
+   i18n — Translations
+══════════════════════════════════════ */
+const TRANSLATIONS = {
+  fr: {
+    nav_about:'À propos', nav_skills:'Compétences', nav_sage:'Sage ERP', nav_projects:'Projets', nav_dl:'⬇ Télécharger CV',
+    hero_badge:'Disponible · Open to work',
+    hero_desc:'Développeur <strong>senior</strong> basé à Antananarivo, expert <strong>Web</strong> (PHP/Laravel, Python/Flask, React, Vue.js, Node.js), <strong>Mobile</strong> (Java/Android, Spring Boot) et <strong>Desktop</strong> (C#/.NET) — et <span class="sg">spécialiste Sage 100c ERP</span> (objets métier, automatisation, intégration comptable & commerciale).',
+    hero_btn1:'📄 Voir mon CV', hero_btn2:'🚀 Mes projets', hero_btn3:'🏆 Expertise Sage ERP',
+    stat1:'Projets réalisés', stat2:'Technologies maîtrisées', stat3:"Domaines d'expertise",
+    pb2_text:'Expert Sage 100c', pb3_text:'Open to Work ✓',
+    about_chip:'Présentation', about_title:'À propos de <span class="acc">moi</span>',
+    about_p1:'Je suis <strong>RAKOTONDRAZAKA Notahinjanahary Mirajo</strong>, développeur <strong>senior</strong> web, mobile & desktop basé à Antananarivo, Madagascar.',
+    about_p2:"Titulaire d'une Licence (Bac+3) en Génie Logiciel et Base de Données à l'ENI-Fianarantsoa. Mon expertise couvre PHP/Laravel, Python/Flask, React, Vue.js, Node.js, Java Android, Spring Boot et C#/.NET pour le desktop.",
+    about_p3:'<span class="sg">Spécialiste Sage 100c ERP</span> : maîtrise approfondie et précise des objets métier (Comptabilité, Gestion Commerciale, Immobilisations, Trésorerie), développement de modules personnalisés en C#/.NET et automatisation de processus métier complets.',
+    about_p4:"Autonome, rigoureux, orienté résolution de problèmes. Je maîtrise les workflows Git/GitHub et applique les bonnes pratiques DevOps (CI/CD, conteneurisation).",
+    lbl_email:'Email', lbl_phone:'Téléphone', lbl_city:'Ville', lbl_nat:'Nationalité',
+    lbl_degree:'Diplôme', val_city:'Antananarivo, Analamanga',
+    val_degree:'Bac+3 Génie Logiciel & Base de données — ENI Fianarantsoa',
+    lbl_lang:'Langues', lang_native:'Maternelle', lang_fluent:'Maîtrise', lang_read:'Compréhension',
+    lang_fluent2:'Maîtrise professionnelle', lang_read2:'Compréhension lecture',
+    lbl_tools:'Outils & Pratiques', avail_label:'Disponible — Remote / Freelance / CDI / CDD', lbl_avail:'Disponibilité',
+    skills_chip:'Technologies', skills_title:'Compétences <span class="acc">techniques</span>',
+    sk1_title:'Développement Web', sk1_desc:"Applications web complètes et performantes, de la conception à la mise en production.",
+    sk2_title:'Frontend Moderne & Node.js', sk2_desc:"Interfaces réactives et APIs JavaScript modernes, du composant à l'API REST.",
+    sk3_title:'Développement Mobile', sk3_desc:"Applications Android natives performantes, de la conception UI à l'intégration API.",
+    sk4_title:'Développement Desktop', sk4_desc:"Logiciels de bureau robustes pour la gestion d'entreprise et l'interfaçage ERP.",
+    sk5_title:'Sage 100c ERP', sk5_desc:"Maîtrise avancée et précise des objets métier Sage 100c pour l'automatisation complète de la gestion d'entreprise.",
+    sk6_title:'Bases de Données', sk6_desc:"Conception, modélisation et optimisation de bases de données relationnelles.",
+    sk7_title:'Outils, Versioning & DevOps', sk7_desc:"Gestion de code source, revue de code et automatisation du déploiement.",
+    xp_badge:'EXPERT', xp_badge2:'EXPERT',
+    sage_chip:'Spécialisation ERP', sage_title:'Expert <span class="acc-amber">Sage 100c</span> ERP',
+    sage_sub:'Au-delà du développement web et mobile, je suis <strong>développeur Sage spécialisé en grande précision</strong> : interfaçage par objets métier, automatisation de processus comptables et commerciaux, requêtes et migrations de données.',
+    sage_h3:'Précision & profondeur technique',
+    sage_p1:"Je n'utilise pas Sage 100c uniquement comme un logiciel : je le <strong>développe</strong>. Mes modules s'interfacent directement avec le moteur d'objets métier pour automatiser des processus complets, de la saisie d'un document jusqu'à sa validation comptable.",
+    sage_li1:'<strong>Objets métier</strong> — Document, Tiers, Article, Compte, Règlement (C#/.NET)',
+    sage_li2:'<strong>Automatisation</strong> — facturation, relances, écritures comptables générées',
+    sage_li3:'<strong>Requêtes & extractions</strong> — SQL natif et objets métier combinés',
+    sage_li4:'<strong>Interfaçage</strong> — connecteurs tiers, import/export, migrations de données',
+    sage_mod_title:'Modules & compétences précises',
+    sage_m1:'Objets Métier (clsCpt*)', sage_m2:'Comptabilité générale', sage_m3:'Gestion Commerciale', sage_m4:'Immobilisations',
+    sage_m5:'Trésorerie', sage_m6:'Requêtes SQL avancées', sage_m7:'Modules C#/.NET sur mesure', sage_m8:'Migration de données',
+    proj_chip:'Réalisations', proj_title:'Projets <span class="acc">réalisés</span>',
+    p1_title:'Traitement Bon de Commande Mobile', p1_desc:"Application Android complète pour la gestion des bons de commande. Flux complet depuis la saisie jusqu'à la validation avec synchronisation temps réel via Spring Boot.",
+    p1_short:"Application Android de traitement des bons de commande avec synchronisation en temps réel.",
+    p2_title:'Gestion Grossiste Boissons', p2_desc:"Application web complète pour un grossiste en boissons : stocks, commandes fournisseurs, clients, facturation et suivi des livraisons avec tableaux de bord.",
+    p2_short:"Solution complète : stocks, commandes, clients, fournisseurs, facturation et livraisons.",
+    p3_title:'Application Web Flask / Python', p3_desc:"APIs REST et applications web avec Python/Flask, incluant authentification JWT, templates Jinja2, ORM SQLAlchemy et intégration base de données complète.",
+    p3_short:"APIs REST avec authentification JWT, gestion des routes et intégration base de données.",
+    p4_title:'Intégration & Automatisation Sage 100c', p4_desc:"Modules personnalisés interfacés avec Sage 100c via les objets métier : automatisation complète des processus comptables et commerciaux, génération d'écritures, requêtes avancées et migration de données.",
+    p4_short:"Modules personnalisés pour l'automatisation des processus comptables et commerciaux en grande précision.",
+    p5_title:'Dashboard Analytique React & Node.js', p5_desc:"Tableau de bord interactif avec API Node.js/Express et interface React, visualisation de données en temps réel et composants Vue.js réutilisables.",
+    p5_short:"Tableau de bord interactif avec API REST et visualisation de données temps réel.",
+    p6_title:'Logiciel Desktop de Gestion', p6_desc:"Application desktop C#/.NET (WinForms) pour la gestion interne : facturation, stocks et reporting, avec base de données SQL Server.",
+    p6_short:"Application desktop de facturation, stocks et reporting.",
+    cv_chip:'Curriculum Vitae', cv_title:'Mon CV <span class="acc">complet</span>',
+    cv_role_tag:'Développeur Senior Full-Stack — Web · Mobile · Desktop', cv_spec_pill:'Expert Sage 100c ERP',
+    cv_skills:'Compétences', cv_qualities:'Qualités', cv_profile:'Profil', lvl_expert:'★★★★★ Expert',
+    cv_profile_txt:'Développeur <strong>senior</strong> full-stack, titulaire d\'un Bac+3 en Génie Logiciel et Base de Données (ENI Fianarantsoa). Maîtrise de PHP/Laravel, Python/Flask, React, Vue.js, Node.js, Java Android et C#/.NET pour le desktop. <span class="sg">Spécialiste Sage 100c ERP</span> : objets métier, automatisation comptable et commerciale en grande précision. Rigoureux, orienté qualité, pratique Git/GitHub et les pratiques DevOps.',
+    cv_education:'Formation', cv_degree:"Licence — Bac+3 Génie Logiciel & Base de Données", cv_graduated:'Diplômé',
+    cv_projects:'Projets & Expériences', cv_stack:'Stack Technique', cv_frontend:'Frontend Moderne', cv_mobdesk:'Mobile & Desktop',
+    cv_erp:'Sage 100c ERP', cv_db:'Base de données', cv_tools:'Outils',
+    cv_dl_btn:'⬇ Télécharger le CV (PDF)', cv_view_btn:'👁 Aperçu du PDF',
+    q1:'Autonomie',q2:'Rigueur',q3:'Adaptabilité',q4:'Travail équipe',q5:'Veille techno',q6:'Problem solving',
+    contact_chip:'Contact', contact_title:'Travaillons <span class="acc">ensemble</span>',
+    contact_desc:"Vous avez un projet web, mobile ou desktop ? Besoin d'un développeur senior disponible en remote ou d'un expert Sage 100c pour automatiser votre gestion ? Je serais ravi d'échanger avec vous !",
+    form_name:'NOM_COMPLET', ph_name:'Votre nom et prénom', form_subject:'SUJET',
+    ph_subject:'Proposition de projet / collaboration...', form_message:'MESSAGE',
+    ph_message:'Décrivez votre projet ou votre besoin...', form_send:'🚀 Envoyer le message',
+    footer_rights:'Tous droits réservés',
+    msg_fill:'⚠️ Veuillez remplir tous les champs.', msg_email:'⚠️ Email invalide.',
+    msg_sending:'⏳ Envoi...', msg_ok:'✅ Message envoyé ! Je vous répondrai bientôt.', msg_fail:'❌ Échec. Réessayez plus tard.',
+    msg_sent:'✅ Envoyé !'
+  },
+  en: {
+    nav_about:'About', nav_skills:'Skills', nav_sage:'Sage ERP', nav_projects:'Projects', nav_dl:'⬇ Download CV',
+    hero_badge:'Available · Open to work',
+    hero_desc:'<strong>Senior</strong> developer based in Antananarivo, expert in <strong>Web</strong> (PHP/Laravel, Python/Flask, React, Vue.js, Node.js), <strong>Mobile</strong> (Java/Android, Spring Boot) and <strong>Desktop</strong> (C#/.NET) — and <span class="sg">Sage 100c ERP specialist</span> (business objects, automation, accounting & commercial integration).',
+    hero_btn1:'📄 View my CV', hero_btn2:'🚀 My projects', hero_btn3:'🏆 Sage ERP expertise',
+    stat1:'Projects completed', stat2:'Technologies mastered', stat3:'Areas of expertise',
+    pb2_text:'Sage 100c Expert', pb3_text:'Open to Work ✓',
+    about_chip:'Presentation', about_title:'About <span class="acc">me</span>',
+    about_p1:'I am <strong>RAKOTONDRAZAKA Notahinjanahary Mirajo</strong>, a <strong>senior</strong> web, mobile & desktop developer based in Antananarivo, Madagascar.',
+    about_p2:'Bachelor of Science (BSc) in Software Engineering and Databases at ENI-Fianarantsoa. My expertise covers PHP/Laravel, Python/Flask, React, Vue.js, Node.js, Java Android, Spring Boot and C#/.NET for desktop.',
+    about_p3:'<span class="sg">Sage 100c ERP specialist</span>: in-depth, precise mastery of business objects (Accounting, Commercial Management, Fixed Assets, Treasury), custom C#/.NET module development and full business-process automation.',
+    about_p4:'Autonomous, rigorous, problem-oriented. I master Git/GitHub workflows and apply DevOps best practices (CI/CD, containerization).',
+    lbl_email:'Email', lbl_phone:'Phone', lbl_city:'City', lbl_nat:'Nationality',
+    lbl_degree:'Degree', val_city:'Antananarivo, Analamanga',
+    val_degree:'BSc Software Engineering & Databases — ENI Fianarantsoa',
+    lbl_lang:'Languages', lang_native:'Native', lang_fluent:'Fluent', lang_read:'Reading',
+    lang_fluent2:'Professional fluency', lang_read2:'Reading comprehension',
+    lbl_tools:'Tools & Practices', avail_label:'Available — Remote / Freelance / Full-time / Contract', lbl_avail:'Availability',
+    skills_chip:'Technologies', skills_title:'Technical <span class="acc">skills</span>',
+    sk1_title:'Web Development', sk1_desc:'Complete and high-performance web applications, from design to production.',
+    sk2_title:'Modern Frontend & Node.js', sk2_desc:'Reactive interfaces and modern JavaScript APIs, from component to REST API.',
+    sk3_title:'Mobile Development', sk3_desc:'High-performance native Android apps, from UI design to API integration.',
+    sk4_title:'Desktop Development', sk4_desc:'Robust desktop software for business management and ERP interfacing.',
+    sk5_title:'Sage 100c ERP', sk5_desc:'Advanced, precise mastery of Sage 100c business objects for full business-management automation.',
+    sk6_title:'Databases', sk6_desc:'Design, modeling and optimization of relational databases.',
+    sk7_title:'Tools, Versioning & DevOps', sk7_desc:'Source code management, code review and deployment automation.',
+    xp_badge:'EXPERT', xp_badge2:'EXPERT',
+    sage_chip:'ERP Specialization', sage_title:'<span class="acc-amber">Sage 100c</span> ERP Expert',
+    sage_sub:'Beyond web and mobile development, I am a <strong>Sage developer specialized in great precision</strong>: business-object interfacing, accounting and commercial process automation, data queries and migrations.',
+    sage_h3:'Precision & technical depth',
+    sage_p1:"I don't just use Sage 100c as software: I <strong>develop</strong> on it. My modules interface directly with the business-object engine to automate complete processes, from entering a document to its accounting validation.",
+    sage_li1:'<strong>Business objects</strong> — Document, Party, Item, Account, Payment (C#/.NET)',
+    sage_li2:'<strong>Automation</strong> — invoicing, reminders, generated accounting entries',
+    sage_li3:'<strong>Queries & extraction</strong> — native SQL combined with business objects',
+    sage_li4:'<strong>Interfacing</strong> — third-party connectors, import/export, data migrations',
+    sage_mod_title:'Modules & precise skills',
+    sage_m1:'Business Objects (clsCpt*)', sage_m2:'General accounting', sage_m3:'Commercial management', sage_m4:'Fixed assets',
+    sage_m5:'Treasury', sage_m6:'Advanced SQL queries', sage_m7:'Custom C#/.NET modules', sage_m8:'Data migration',
+    proj_chip:'Portfolio', proj_title:'Completed <span class="acc">projects</span>',
+    p1_title:'Mobile Purchase Order Processing', p1_desc:'Complete Android application for purchase order management. Full workflow from input to validation with real-time sync via Spring Boot.',
+    p1_short:'Android app for purchase order processing with real-time synchronization.',
+    p2_title:'Beverage Wholesaler Management', p2_desc:'Complete web application for a beverage wholesaler: stock, supplier orders, customers, invoicing and delivery tracking with dashboards.',
+    p2_short:'Complete solution: stock, orders, customers, suppliers, invoicing and deliveries.',
+    p3_title:'Flask / Python Web Application', p3_desc:'REST APIs and web apps with Python/Flask, including JWT authentication, Jinja2 templates, SQLAlchemy ORM and full database integration.',
+    p3_short:'REST APIs with JWT authentication, route management and database integration.',
+    p4_title:'Sage 100c Integration & Automation', p4_desc:'Custom modules interfaced with Sage 100c via business objects: full automation of accounting and commercial processes, entry generation, advanced queries and data migration.',
+    p4_short:'Custom modules for automating accounting and commercial processes with great precision.',
+    p5_title:'React & Node.js Analytics Dashboard', p5_desc:'Interactive dashboard with a Node.js/Express API and React interface, real-time data visualization and reusable Vue.js components.',
+    p5_short:'Interactive dashboard with REST API and real-time data visualization.',
+    p6_title:'Desktop Management Software', p6_desc:'C#/.NET desktop application (WinForms) for internal management: invoicing, stock and reporting, with a SQL Server database.',
+    p6_short:'Desktop application for invoicing, stock and reporting.',
+    cv_chip:'Curriculum Vitae', cv_title:'My complete <span class="acc">CV</span>',
+    cv_role_tag:'Senior Full-Stack Developer — Web · Mobile · Desktop', cv_spec_pill:'Sage 100c ERP Expert',
+    cv_skills:'Skills', cv_qualities:'Qualities', cv_profile:'Profile', lvl_expert:'★★★★★ Expert',
+    cv_profile_txt:'<strong>Senior</strong> full-stack developer, holding a BSc in Software Engineering and Databases (ENI Fianarantsoa). Proficient in PHP/Laravel, Python/Flask, React, Vue.js, Node.js, Java Android and C#/.NET for desktop. <span class="sg">Sage 100c ERP specialist</span>: business objects, accounting and commercial automation with great precision. Rigorous, quality-focused, uses Git/GitHub and DevOps practices.',
+    cv_education:'Education', cv_degree:'Bachelor — BSc Software Engineering & Databases', cv_graduated:'Graduated',
+    cv_projects:'Projects & Experience', cv_stack:'Tech Stack', cv_frontend:'Modern Frontend', cv_mobdesk:'Mobile & Desktop',
+    cv_erp:'Sage 100c ERP', cv_db:'Databases', cv_tools:'Tools',
+    cv_dl_btn:'⬇ Download CV (PDF)', cv_view_btn:'👁 Preview PDF',
+    q1:'Autonomy',q2:'Rigor',q3:'Adaptability',q4:'Teamwork',q5:'Tech watch',q6:'Problem solving',
+    contact_chip:'Contact', contact_title:"Let's work <span class='acc'>together</span>",
+    contact_desc:'Have a web, mobile or desktop project? Need a senior remote developer or a Sage 100c expert to automate your business? I would be happy to discuss with you!',
+    form_name:'FULL_NAME', ph_name:'Your full name', form_subject:'SUBJECT',
+    ph_subject:'Project proposal / collaboration...', form_message:'MESSAGE',
+    ph_message:'Describe your project or need...', form_send:'🚀 Send message',
+    footer_rights:'All rights reserved',
+    msg_fill:'⚠️ Please fill all fields.', msg_email:'⚠️ Invalid email.',
+    msg_sending:'⏳ Sending...', msg_ok:'✅ Message sent! I will reply soon.', msg_fail:'❌ Failed. Please try again.',
+    msg_sent:'✅ Sent!'
+  }
+};
+
+let currentLang = 'fr';
+let currentTheme = 'light';
+
+function setLang(lang) {
+  currentLang = lang;
+  const t = TRANSLATIONS[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if (t[key] !== undefined) el.placeholder = t[key];
+  });
+  document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.documentElement.lang = lang;
+  rolesData.fr = ['// Développeur Senior Full-Stack','// Expert Sage 100c ERP','// Développeur Mobile & Desktop','// React · Vue · Node.js'];
+  rolesData.en = ['// Senior Full-Stack Developer','// Sage 100c ERP Expert','// Mobile & Desktop Developer','// React · Vue · Node.js'];
+}
+
+/* ══════════════════════════════════════
+   Dark / Light theme
+══════════════════════════════════════ */
+function toggleTheme() {
+  currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', currentTheme === 'dark' ? 'dark' : '');
+  document.getElementById('theme-btn').textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+  document.querySelectorAll('.theme-toggle').forEach(b => {
+    b.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+  });
+  try{ localStorage.setItem('theme', currentTheme); }catch(e){}
+}
+
+(function(){
+  try{
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark') toggleTheme();
+  }catch(e){}
+})();
+
+/* ══════════════════════════════════════
+   Scroll progress + nav
+══════════════════════════════════════ */
+window.addEventListener('scroll', () => {
+  const pct = (scrollY / (document.body.scrollHeight - innerHeight)) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('navbar').classList.toggle('scrolled', scrollY > 50);
+});
+
+/* ══════════════════════════════════════
+   Hamburger
+══════════════════════════════════════ */
+function toggleMenu() {
+  document.getElementById('mobMenu').classList.toggle('open');
+  document.getElementById('hbg').classList.toggle('open');
+}
+function closeMenu() {
+  document.getElementById('mobMenu').classList.remove('open');
+  document.getElementById('hbg').classList.remove('open');
+}
+document.addEventListener('click', e => {
+  const m = document.getElementById('mobMenu'), b = document.getElementById('hbg');
+  if (m.classList.contains('open') && !m.contains(e.target) && !b.contains(e.target)) closeMenu();
+});
+
+/* ══════════════════════════════════════
+   Reveal on scroll
+══════════════════════════════════════ */
+const ro = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) setTimeout(() => e.target.classList.add('in'), i * 70);
+  });
+}, { threshold: .07 });
+document.querySelectorAll('.rev,.rev-l,.rev-r').forEach(el => ro.observe(el));
+
+/* ══════════════════════════════════════
+   Typing animation
+══════════════════════════════════════ */
+const rolesData = {
+  fr: ['// Développeur Senior Full-Stack','// Expert Sage 100c ERP','// Développeur Mobile & Desktop','// React · Vue · Node.js'],
+  en: ['// Senior Full-Stack Developer','// Sage 100c ERP Expert','// Mobile & Desktop Developer','// React · Vue · Node.js']
+};
+let ri = 0, ci = 0, del = false;
+const rEl = document.getElementById('hero-role');
+function type() {
+  const roles = rolesData[currentLang];
+  const c = roles[ri % roles.length];
+  const cursor = '<span class="crt">&nbsp;</span>';
+  if (!del && ci < c.length) { rEl.innerHTML = c.slice(0, ++ci) + cursor; setTimeout(type, 60); }
+  else if (!del && ci === c.length) { del = true; setTimeout(type, 2200); }
+  else if (del && ci > 3) { rEl.innerHTML = c.slice(0, --ci) + cursor; setTimeout(type, 32); }
+  else { del = false; ri = (ri + 1) % rolesData[currentLang].length; ci = 3; setTimeout(type, 380); }
+}
+type();
+
+/* ══════════════════════════════════════
+   Counters
+══════════════════════════════════════ */
+function animCount(el) {
+  const t = +el.dataset.target; let n = 0;
+  const s = () => { n += Math.ceil(t / 30); if (n >= t) n = t; el.textContent = n + (n === t ? '+' : ''); if (n < t) requestAnimationFrame(s); };
+  s();
+}
+const co = new IntersectionObserver(en => {
+  en.forEach(e => { if (e.isIntersecting) { animCount(e.target); co.unobserve(e.target); } });
+}, { threshold: .5 });
+document.querySelectorAll('[data-target]').forEach(el => co.observe(el));
+
+/* ══════════════════════════════════════
+   EmailJS
+══════════════════════════════════════ */
+emailjs.init('pSjJNGMwvt6SCnsTK');
+
+function showFb(msg, ok) {
+  const fb = document.getElementById('form-fb');
+  fb.style.display = 'block';
+  fb.textContent = msg;
+  fb.style.background = ok ? '#ecfdf5' : '#fff1f2';
+  fb.style.border = ok ? '1.5px solid #a7f3d0' : '1.5px solid #fecdd3';
+  fb.style.color = ok ? '#065f46' : '#9f1239';
+  fb.style.padding = '8px';
+  fb.style.marginTop = '8px';
+  fb.style.borderRadius = '6px';
+}
+
+async function sendMsg() {
+  const t = TRANSLATIONS[currentLang];
+  const btn = document.getElementById('send-btn');
+  const n = document.getElementById('fn').value.trim();
+  const e = document.getElementById('fe').value.trim();
+  const s = document.getElementById('fs').value.trim();
+  const m = document.getElementById('fm').value.trim();
+  if (!n || !e || !s || !m) { showFb(t.msg_fill, false); return; }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(e)) { showFb(t.msg_email, false); return; }
+  btn.textContent = t.msg_sending;
+  btn.disabled = true;
+  try {
+    await emailjs.send('service_dxc6yjq', 'template_sish3vb', {
+      from_name: n, from_email: e, subject: s, message: m, to_name: 'Mirajo Henry'
+    });
+    showFb(t.msg_ok, true);
+    ['fn','fe','fs','fm'].forEach(id => document.getElementById(id).value = '');
+    btn.innerHTML = t.msg_sent;
+    btn.style.background = '#059669';
+    setTimeout(() => {
+      btn.innerHTML = t.form_send;
+      btn.style.background = '';
+      btn.disabled = false;
+    }, 4000);
+  } catch (err) {
+    console.error(err);
+    showFb(t.msg_fail, false);
+    btn.innerHTML = t.form_send;
+    btn.disabled = false;
+  }
+}
+</script>
+
+</body>
+</html>
